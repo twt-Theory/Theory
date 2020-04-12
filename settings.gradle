@@ -1,0 +1,2 @@
+rootProject.name='TWTTheory'
+include ':app'
