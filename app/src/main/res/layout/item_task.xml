@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:outlineAmbientShadowColor="#CCCCCC"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="#FFCC33"
+        android:layout_width="300dp"
+        android:layout_height="60dp">
+    <TextView
+        android:id="@+id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:text="对xx的投票\问卷"
+        android:textSize="22sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+        <TextView
+            app:layout_constraintStart_toEndOf="@+id/title"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            android:id="@+id/time"
+            android:text="提交时间"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/manage"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginLeft="10dp"
+        android:text="任务管理"
+        android:background="#CCCCCC"
+        app:layout_constraintStart_toEndOf="@+id/card"
+        app:layout_constraintTop_toTopOf="@+id/card" />
+
+    <Button
+        android:id="@+id/analysis"
+        app:layout_constraintStart_toStartOf="@+id/manage"
+        app:layout_constraintTop_toBottomOf="@+id/manage"
+        android:layout_marginTop="10dp"
+        android:text="数据分析"
+        android:background="#6699cc"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

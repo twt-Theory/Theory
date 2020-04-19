@@ -5,7 +5,10 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId "com.example.twttheory"
         minSdkVersion 16
@@ -52,4 +55,7 @@ dependencies {
     api 'com.squareup.okhttp3:logging-interceptor:3.11.0'
 
     api 'com.orhanobut:hawk:2.0.1'
+    //Newly added
+    implementation 'de.hdodenhof:circleimageview:3.0.2'
+
 }
