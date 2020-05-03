@@ -19,6 +19,7 @@ public class ReceivingLinearLayout extends LinearLayout {
      */
     private ImageView mExpandBtn;
     private TextView ExpandBtn;
+    private TextView showMore;
 
     /**
      * 是否折叠的临界高度

@@ -17,14 +17,19 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="投票答题问卷"
         android:translationZ="10dp"
         android:layout_width="match_parent"
         android:layout_height="80dp">
+        <TextView
+            android:id="@+id/title"
+            android:text="投票答题问卷主页"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/me"
-            android:src="@drawable/ic_launcher_background"
-            android:layout_marginLeft="200dp"
+            android:src="@drawable/u10"
+            android:layout_marginLeft="150dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
             />
@@ -38,16 +43,23 @@
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/join"
+            android:id="@+id/top_two_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/jlist"
+        android:id="@+id/joinedlist"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/join"
+        app:layout_constraintTop_toBottomOf="@id/top_two_tasks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/load"
-        app:layout_constraintTop_toBottomOf="@id/jlist"
-        app:layout_constraintStart_toStartOf="@id/jlist"
+        app:layout_constraintTop_toBottomOf="@id/joinedlist"
+        app:layout_constraintStart_toStartOf="@id/joinedlist"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"
         android:text="更多显示"
@@ -69,7 +81,7 @@
 
     <TextView
         android:id="@+id/release"
-        app:layout_constraintStart_toStartOf="@id/jlist"
+        app:layout_constraintStart_toStartOf="@id/joinedlist"
         app:layout_constraintTop_toBottomOf="@id/load"
         android:layout_marginTop="20dp"
         android:text="我发布的投票答题问卷"
