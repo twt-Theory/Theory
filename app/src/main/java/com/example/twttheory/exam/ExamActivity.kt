@@ -46,6 +46,10 @@ class ExamActivity : AppCompatActivity() {
         initDate()
         //提交按钮
         val button: Button = findViewById<View>(R.id.submit) as Button
+        val mReturnButton = findViewById<ImageView>(R.id.return_button)
+        mReturnButton.setOnClickListener {
+            finish()
+        }
         button.setOnClickListener{
             //显示提交后的页面
         }

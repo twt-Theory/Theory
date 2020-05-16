@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.twttheory.R
+import com.example.twttheory.analysis.AnalysisActivity
 import com.example.twttheory.exam.ExamActivity
+import com.example.twttheory.manage.ManageActivity
 import com.example.twttheory.result.ResultActivity
 
 class MainPage : AppCompatActivity() {
@@ -71,6 +73,16 @@ class MainPage : AppCompatActivity() {
 
             }
         })
+        releasedAdapter.onManageButtonClickListener = View.OnClickListener {
+            val intent = Intent()
+            intent.setClass(this@MainPage, ManageActivity::class.java)
+            startActivity(intent)
+        }
+        releasedAdapter.onDataAnalysisBottonClickListener = View.OnClickListener {
+            val intent = Intent()
+            intent.setClass(this@MainPage, AnalysisActivity::class.java)
+            startActivity(intent)
+        }
         val releasedList = findViewById<RecyclerView>(R.id.tasks)
         val joinedList = findViewById<RecyclerView>(R.id.joinedlist)
         val showMore = findViewById<TextView>(R.id.load)
