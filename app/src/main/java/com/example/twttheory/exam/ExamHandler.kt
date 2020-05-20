@@ -27,7 +27,6 @@ fun generateRequestBody(requestDataMap: Map<String, String>): Map<String, Reques
 
 //创建新任务
 fun createExam(
-    callback: suspend (RefreshState<Unit>) -> Unit = {},
     paper_type: Int,
     paper_name: String,
     paper_hint: String,
@@ -36,7 +35,8 @@ fun createExam(
     end_time: String,
     last_time: Int,
     password: String,
-    times: Int
+    times: Int,
+    callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
         val params = mapOf(
@@ -61,7 +61,8 @@ fun createExam(
 
 //暂停任务
 fun pauseExam(
-    callback: suspend (RefreshState<Unit>) -> Unit = {}, paper_id: Int
+    paper_id: Int,
+    callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
         ExamService.pauseTask(
@@ -79,15 +80,15 @@ fun pauseExam(
 
 //修改任务限制
 fun changeExam(
-    callback: suspend (RefreshState<Unit>) -> Unit = {},
     paper_id: Int,
     paper_name: String,
     paper_hint: String,
     start_time: String,
     end_time: String,
-    last_time: Int,
+    last_time: String,
     password: String,
-    times: Int
+    times: String,
+    callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
         val params = mapOf(
@@ -96,9 +97,9 @@ fun changeExam(
             "paper_hint" to paper_hint,
             "start_time" to start_time,
             "end_time" to end_time,
-            "last_time" to last_time.toString(),
+            "last_time" to last_time,
             "password" to password,
-            "times" to times.toString()
+            "times" to times
         )
         ExamService.changeTask(generateRequestBody(params)).awaitAndHandle {
             callback(RefreshState.Failure(it))
@@ -110,7 +111,8 @@ fun changeExam(
 
 //下载问卷
 fun downloadExam(
-    callback: suspend (RefreshState<Unit>) -> Unit = {}, paper_id: Int
+    paper_id: Int,
+    callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
         ExamService.downloadTask(
@@ -129,7 +131,8 @@ fun downloadExam(
 
 //停止并删除问卷
 fun deleteExam(
-    callback: suspend (RefreshState<Unit>) -> Unit = {}, paper_id: Int
+    paper_id: Int,
+    callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
         ExamService.deleteTask(
@@ -175,9 +178,9 @@ fun getRelatedExam(
 
 //答题时获取题目
 fun getExam(
-    callback: suspend (RefreshState<Unit>) -> Unit = {},
     paper_id: Int,
-    password: String
+    password: String,
+    callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
         ExamService.getTask(
@@ -198,8 +201,8 @@ fun getExam(
 
 //交卷
 fun solveExam(
-    callback: suspend (RefreshState<Unit>) -> Unit = {},
-    answer: List<String>
+    answer: List<String>,
+    callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
         ExamService.solveTask(
