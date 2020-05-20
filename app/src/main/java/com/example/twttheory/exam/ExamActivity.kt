@@ -20,20 +20,20 @@ import org.json.JSONException
 import org.json.JSONObject
 
 class ExamActivity : AppCompatActivity() {
-    private var test_layout: LinearLayout? = null
-    private val the_page: Page? = null
+    private var testLayout: LinearLayout? = null
+    private val thePage: Page? = null
     //答案列表
-    private var the_answer_list: ArrayList<Answer>? = null
+    private var theAnswerList: ArrayList<Answer>? = null
     //问题列表
-    private var the_quesition_list: ArrayList<Question>? = null
+    private var theQuesitionList: ArrayList<Question>? = null
     //问题所在的View
-    private var que_view: View? = null
+    private var queView: View? = null
     //答案所在的View
-    private var ans_view: View? = null
+    private var ansView: View? = null
     private var xInflater: LayoutInflater? = null
     private var page: Page? = null
     //下面这两个list是为了实现点击的时候改变图片，因为单选多选时情况不一样，为了方便控制
-//存每个问题下的imageview
+    //存每个问题下的imageview
     private val imglist: ArrayList<ArrayList<ImageView>> = ArrayList<ArrayList<ImageView>>()
     //存每个答案的imageview
     private var imglist2: ArrayList<ImageView>? = null
@@ -128,55 +128,55 @@ class ExamActivity : AppCompatActivity() {
     }
 
     private fun initView(page: Page) { // TODO Auto-generated method stub
-//这是要把问题的动态布局加入的布局
-        test_layout = findViewById<View>(R.id.lly_test) as LinearLayout
-        val page_txt = findViewById<View>(R.id.txt_title) as TextView
-        page_txt.text = page.title
+        //这是要把问题的动态布局加入的布局
+        testLayout = findViewById<View>(R.id.lly_test) as LinearLayout
+        val pageTxt = findViewById<View>(R.id.txt_title) as TextView
+        pageTxt.text = page.title
         //获得问题即第二层的数据
-        the_quesition_list = page.quesitions
+        theQuesitionList = page.quesitions
         //根据第二层问题的多少，来动态加载布局
-        for (i in 0 .. the_quesition_list!!.size-1) {
-            que_view = xInflater!!.inflate(R.layout.layout_question,test_layout, false)
-            val txt_que = que_view!!.findViewById(R.id.txt_question_item) as TextView
+        for (i in 0 .. theQuesitionList!!.size-1) {
+            queView = xInflater!!.inflate(R.layout.layout_question,testLayout, false)
+            val txt_que = queView!!.findViewById(R.id.txt_question_item) as TextView
             //这是第三层布局要加入的地方
-            val add_layout = que_view!!.findViewById(R.id.lly_answer) as LinearLayout
+            val add_layout = queView!!.findViewById(R.id.lly_answer) as LinearLayout
             //判断单选-多选来实现后面是*号还是*多选，
-            if (the_quesition_list!!.get(i).type.equals("1")) {
-                set(txt_que, the_quesition_list!!.get(i).content, 1)
+            if (theQuesitionList!!.get(i).type.equals("1")) {
+                set(txt_que, theQuesitionList!!.get(i).content, 1)
             } else {
-                set(txt_que, the_quesition_list!!.get(i).content, 0)
+                set(txt_que, theQuesitionList!!.get(i).content, 0)
             }
             //获得答案即第三层数据
-            the_answer_list = the_quesition_list!!.get(i).answers
+            theAnswerList = theQuesitionList!!.get(i).answers
             imglist2 = ArrayList<ImageView>()
-            for (j in 0 until the_answer_list!!.size) {
-                ans_view = xInflater!!.inflate(R.layout.layout_answer, null)
-                val txt_ans = ans_view!!.findViewById(R.id.txt_answer_item) as TextView
-                val image: ImageView = ans_view!!.findViewById(R.id.image) as ImageView
-                val line_view: View = ans_view!!.findViewById(R.id.vw_line)
-                if (j == the_answer_list!!.size - 1) { //最后一条答案下面不要线是指布局的问题
+            for (j in 0 until theAnswerList!!.size) {
+                ansView = xInflater!!.inflate(R.layout.layout_answer, null)
+                val txt_ans = ansView!!.findViewById(R.id.txt_answer_item) as TextView
+                val image: ImageView = ansView!!.findViewById(R.id.image) as ImageView
+                val line_view: View = ansView!!.findViewById(R.id.vw_line)
+                if (j == theAnswerList!!.size - 1) { //最后一条答案下面不要线是指布局的问题
                     line_view.visibility = View.GONE
                 }
                 //判断单选多选加载不同选项图片
-                if (the_quesition_list!!.get(i).type.equals("1")) {
+                if (theQuesitionList!!.get(i).type.equals("1")) {
                    // image.setBackgroundDrawable(resources.getDrawable(R.drawable.multiselect_false))
                 } else {
                    // image.setBackgroundDrawable(resources.getDrawable(R.drawable.radio_false))
                 }
                 Log.e("---", "------$image")
                 imglist2!!.add(image)
-                txt_ans.text = the_answer_list!!.get(j).answer_content
+                txt_ans.text = theAnswerList!!.get(j).answer_content
                 val lly_answer_size =
-                    ans_view!!.findViewById(R.id.lly_answer_size) as LinearLayout
+                    ansView!!.findViewById(R.id.lly_answer_size) as LinearLayout
                 lly_answer_size.setOnClickListener{
                     //之后再写
                 }
-                add_layout.addView(ans_view)
+                add_layout.addView(ansView)
             }
             /*for(int r=0; r<imglist2.size();r++){
 				Log.e("---", "imglist2--------"+imglist2.get(r));
 			}*/imglist.add(imglist2!!)
-            test_layout!!.addView(que_view)
+            testLayout!!.addView(queView)
         }
         /*for(int q=0;q<imglist.size();q++){
 			for(int w=0;w<imglist.get(q).size();w++){
@@ -232,17 +232,17 @@ class ExamActivity : AppCompatActivity() {
 				}
 			}
 			Log.e("----", "点击了---"+imglist.get(i).get(j));*/
-            if (the_quesition_list!![i].getType().equals("1")) { //多选
+            if (theQuesitionList!![i].getType().equals("1")) { //多选
                 if (the_answer_lists[j].ans_state === 0) { //如果未被选中
                     txt.setTextColor(Color.parseColor("#EA5514"))
                     //imglist[i][j].setBackgroundDrawable(resources.getDrawable(R.drawable.multiselect_true))
                     the_answer_lists[j].ans_state = 1
-                    the_quesition_list!![i].setQue_state(1)
+                    theQuesitionList!![i].setQue_state(1)
                 } else {
                     txt.setTextColor(Color.parseColor("#595757"))
                     //imglist[i][j].setBackgroundDrawable(resources.getDrawable(R.drawable.multiselect_false))
                     the_answer_lists[j].ans_state = 0
-                    the_quesition_list!![i].setQue_state(1)
+                    theQuesitionList!![i].setQue_state(1)
                 }
             } else { //单选
                 for (z in 0 until the_answer_lists.size) {
@@ -252,10 +252,10 @@ class ExamActivity : AppCompatActivity() {
                 if (the_answer_lists[j].ans_state === 0) { //如果当前未被选中
                     //imglist[i][j].setBackgroundDrawable(resources.getDrawable(R.drawable.radio_true))
                     the_answer_lists[j].ans_state = 1
-                    the_quesition_list!![i].setQue_state(1)
+                    theQuesitionList!![i].setQue_state(1)
                 } else { //如果当前已被选中
                     the_answer_lists[j].ans_state = 1
-                    the_quesition_list!![i].setQue_state(1)
+                    theQuesitionList!![i].setQue_state(1)
                 }
             }
             //判断当前选项是否选中
@@ -272,10 +272,10 @@ class ExamActivity : AppCompatActivity() {
             var jsonArray: JSONArray? = JSONArray()
             //点击提交的时候，先判断状态，如果有未答完的就提示，如果没有再把每条答案提交（包含问卷ID 问题ID 及答案ID）
 //注：不用管是否是一个问题的答案，就以答案的个数为准来提交上述格式的数据
-            for (i in 0 until the_quesition_list!!.size) {
-                the_answer_list = the_quesition_list!![i].getAnswers()
+            for (i in 0 until theQuesitionList!!.size) {
+                theAnswerList = theQuesitionList!![i].getAnswers()
                 //判断是否有题没答完
-                if (the_quesition_list!![i].getQue_state() === 0) {
+                if (theQuesitionList!![i].getQue_state() === 0) {
                     Toast.makeText(
                         applicationContext,
                         "您第" + (i + 1) + "题没有答完",
@@ -285,13 +285,13 @@ class ExamActivity : AppCompatActivity() {
                     isState = false
                     break
                 } else {
-                    for (j in 0 until the_answer_list!!.size) {
-                        if (the_answer_list!![j].ans_state === 1) {
+                    for (j in 0 until theAnswerList!!.size) {
+                        if (theAnswerList!![j].ans_state === 1) {
                             val json = JSONObject()
                             try {
                                 json.put("psychologicalId", page.pageId)
-                                json.put("questionId", the_quesition_list!![i].getQuesitionId())
-                                json.put("optionId", the_answer_list!![j].answerId)
+                                json.put("questionId", theQuesitionList!![i].getQuesitionId())
+                                json.put("optionId", theAnswerList!![j].answerId)
                                 jsonArray!!.put(json)
                             } catch (e: JSONException) { // TODO Auto-generated catch block
                                 e.printStackTrace()
