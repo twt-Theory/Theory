@@ -111,6 +111,7 @@ data class Questions(
 
 //答题时获取的单个题目
 data class GetQuestion(
+    val question: String,
     val answer: List<String>,
     val right_id: String,
     val type: Int,
@@ -122,8 +123,9 @@ data class GetQuestion(
     val min_select: Int
 )
 
-//创建新任务数据类
+//创建新任务时的每一道题
 data class PostQuestion(
+    val question: String,
     val answer: List<String>,
     val right_id: String,
     val type: Int,
