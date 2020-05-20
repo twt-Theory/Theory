@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".analysis.AnalysisActivity"></activity>
+        <activity android:name=".mainPage.CreatTaskActivity"></activity>
+        <activity android:name=".analysis.AnalysisActivity" />
         <activity android:name=".manage.ManageActivity" />
         <activity android:name=".exam.ExamActivity" />
         <activity android:name=".result.ResultActivity" />

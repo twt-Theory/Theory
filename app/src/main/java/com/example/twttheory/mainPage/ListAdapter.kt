@@ -29,8 +29,8 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.Holder> {
         this.onItemClickListener = listener
     }
     //这两个是条目右边的
-    lateinit var onManageButtonClickListener : View.OnClickListener
-    lateinit var onDataAnalysisBottonClickListener : View.OnClickListener
+    var onManageButtonClickListener : View.OnClickListener? = null
+    var onDataAnalysisBottonClickListener : View.OnClickListener? = null
     private var context : Context? = null
     private var data : ArrayList<DataBean>? = null
     private var type : AdapterType = AdapterType.JOIN   //默认是“我加入的问卷”的adapter
@@ -64,8 +64,12 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.Holder> {
         holder.itemView.setOnClickListener{
             onItemClickListener?.onItemClick(holder.itemView,position)
         }
-        holder.manageBotton.setOnClickListener(onManageButtonClickListener)
-        holder.dadaAnalysisButton.setOnClickListener(onDataAnalysisBottonClickListener)
+        if(type == AdapterType.RELEASE){
+            //是“我发布的任务”时，加上两个点击监听
+            holder.manageBotton.setOnClickListener(onManageButtonClickListener)
+            holder.dadaAnalysisButton.setOnClickListener(onDataAnalysisBottonClickListener)
+        }
+
     }
 
 

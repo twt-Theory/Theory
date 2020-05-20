@@ -1,5 +1,6 @@
 package com.example.twttheory.mainPage
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,8 +8,12 @@ import android.view.View
 import android.view.animation.LayoutAnimationController
 import android.view.animation.LinearInterpolator
 import android.view.animation.ScaleAnimation
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.twttheory.R
@@ -22,19 +27,27 @@ class MainPage : AppCompatActivity() {
     private var fold = true  //"我参与的问卷"列表，0是收起，1是展开
     var finished = false
     var taskNumber = 0     //任务数量
+    var resultFragment : Fragment? = null
+    lateinit var title : TextView
     lateinit var joinedTasks : ArrayList<View>
     lateinit var taskList : RecyclerView
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
         taskList = findViewById(R.id.tasks)
+        title = findViewById(R.id.title)
+        val creatTaskBotton : Button = findViewById(R.id.creat_task)
         var tasksOnShow = ArrayList<DataBean>()    //列表显示的问卷
         var allTasksExceptTopTwo = ArrayList<DataBean>()       //实际上所有的问卷
         var myReleasedTasks = ArrayList<DataBean>()         //我发布的问卷
         val tempData = DataBean("大学物理习题","进行中","2020/4/13 21:00 ~ 21:03")
         var topTwoItems = listOf<DataBean>(tempData,tempData)
+        //Fragment manager
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
+
         //前两个任务单独显示
         tasksOnShow.add(tempData)
         tasksOnShow.add(tempData)
@@ -45,17 +58,17 @@ class MainPage : AppCompatActivity() {
         myReleasedTasks = tasksOnShow
         //初始化
         val joinedAdapter = ListAdapter(this,tasksOnShow,AdapterType.JOIN)
+        //设置点击事件
         joinedAdapter.setOnItemClickListener(object : ListAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int) {
                 val intent = Intent()
                 intent.setClass(this@MainPage,ResultActivity::class.java)
-                startActivity(intent)
             }
-
             override fun onItemLongClick(view: View, position: Int) {
 
             }
         })
+
         val releasedAdapter = ListAdapter(this,myReleasedTasks,AdapterType.RELEASE)
         releasedAdapter.setOnItemClickListener(object : ListAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int) {
@@ -120,6 +133,13 @@ class MainPage : AppCompatActivity() {
             }
         }
         //初始状态下隐藏recycler view
+
+        //创建任务的按钮
+        creatTaskBotton.setOnClickListener {
+            val intent : Intent = Intent()
+            intent.setClass(this@MainPage, CreatTaskActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun foldOrExtendTask(){
@@ -134,6 +154,13 @@ class MainPage : AppCompatActivity() {
 
             }
         }
+    }
+
+    private fun hideAllFragment( transaction : FragmentTransaction) {
+        if (resultFragment != null && !resultFragment!!.isHidden()) {
+            transaction.hide(resultFragment!!);
+        }
+        
     }
 }
 

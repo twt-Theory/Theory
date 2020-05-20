@@ -10,7 +10,7 @@
         android:outlineAmbientShadowColor="#CCCCCC"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:background="#FFCC33"
+        android:background="#66ccff"
         android:layout_width="300dp"
         android:layout_height="60dp">
     <TextView
@@ -43,7 +43,7 @@
         android:layout_height="24dp"
         android:layout_marginLeft="10dp"
         android:text="任务管理"
-        android:background="#CCCCCC"
+        android:background="#CCCCee"
         app:layout_constraintStart_toEndOf="@+id/card"
         app:layout_constraintTop_toTopOf="@+id/card" />
 

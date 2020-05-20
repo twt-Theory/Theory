@@ -1,4 +1,4 @@
-package com.example.twttheory.mainPage;
+package com.example.twttheory.utils;
 
 import android.animation.ValueAnimator;
 import android.view.View;

@@ -6,20 +6,14 @@
     android:layout_height="match_parent"
     android:isScrollContainer="true"
     tools:context=".mainPage.MainPage">
-<ScrollView
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         app:layout_constraintTop_toTopOf="parent"
         android:translationZ="10dp"
+        android:background="#e0e0e9"
         android:layout_width="match_parent"
         android:layout_height="80dp">
+
         <TextView
             android:id="@+id/title"
             android:text="投票答题问卷主页"
@@ -34,68 +28,92 @@
             android:layout_height="50dp"
             />
     </androidx.appcompat.widget.Toolbar>
-    <TextView
-        android:id="@+id/join"
-        app:layout_constraintStart_toStartOf="@id/toolbar"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:text="我参与的投票答题问卷"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-        <LinearLayout
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/join"
-            android:id="@+id/top_two_tasks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/joinedlist"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_two_tasks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/load"
-        app:layout_constraintTop_toBottomOf="@id/joinedlist"
-        app:layout_constraintStart_toStartOf="@id/joinedlist"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:text="更多显示"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/creat_task"
-        app:layout_constraintTop_toBottomOf="@+id/tasks"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="#FFCC33"
-        android:layout_marginTop="0dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginLeft="90dp"
-        android:text="创建新任务"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"/>
 
-    <TextView
-        android:id="@+id/release"
-        app:layout_constraintStart_toStartOf="@id/joinedlist"
-        app:layout_constraintTop_toBottomOf="@id/load"
-        android:layout_marginTop="20dp"
-        android:text="我发布的投票答题问卷"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tasks"
-        app:layout_constraintTop_toBottomOf="@id/release"
-        android:layout_marginTop="10dp"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+        android:layout_height="match_parent"
+        android:layout_marginTop="76dp"
+        app:layout_constraintStart_toStartOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/join"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="我参与的投票答题问卷      "
+                android:textSize="20sp"
+                android:background="@drawable/myrect1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/top_two_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/join"></LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/joinedlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/top_two_tasks" />
+
+            <TextView
+                android:id="@+id/load"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginLeft="100dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="更多显示"
+                app:layout_constraintStart_toStartOf="@id/joinedlist"
+                app:layout_constraintTop_toBottomOf="@id/joinedlist" />
+
+            <Button
+                android:id="@+id/creat_task"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="124dp"
+                android:layout_marginLeft="124dp"
+                android:background="#66ccff"
+                android:text="创建新任务"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tasks" />
+
+            <TextView
+                android:id="@+id/release"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="我发布的投票答题问卷"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/joinedlist"
+                app:layout_constraintTop_toBottomOf="@id/load" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/release" />
+
+            <FrameLayout
+                android:id="@+id/result_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
