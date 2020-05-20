@@ -48,20 +48,12 @@ interface ExamService {
     ): Deferred<CommonBody<Boolean>>
 
     //获取我发布的
-    @Multipart
     @POST("")
-    fun getMyPosted(
-        @PartMap
-        requestBodyMap: Map<String, RequestBody>
-    ): Deferred<CommonBody<List<Posted>>>
+    fun getMyPosted(): Deferred<CommonBody<List<Posted>>>
 
     //获取和我相关的
-    @Multipart
     @POST("")
-    fun getMyRelated(
-        @PartMap
-        requestBodyMap: Map<String, RequestBody>
-    ): Deferred<CommonBody<List<Related>>>
+    fun getMyRelated(): Deferred<CommonBody<List<Related>>>
 
     //答题
     @Multipart

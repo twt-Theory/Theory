@@ -9,8 +9,8 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 
 //TODO: 暂停任务接口->任务应该有是否暂停的属性
-//TODO: 获取我发布的/和我相关的 无Post参数？
-//TODO：下载操作、获取发布/相关后的操作、答题操作
+//TODO：下载操作
+//TODO：Model完善（更新recyclerView）
 
 fun generateRequestBody(requestDataMap: Map<String, String>): Map<String, RequestBody> {
     val requestBodyMap: MutableMap<String, RequestBody> = HashMap()
@@ -43,6 +43,7 @@ fun createExam(
             "paper_type" to paper_type.toString(),
             "paper_name" to paper_name,
             "paper_hint" to paper_hint,
+            "number" to paper_question.size.toString(),
             "paper_question" to paper_question.toString(),
             "start_time" to start_time,
             "end_time" to end_time,
@@ -149,12 +150,10 @@ fun getPostedExam(
     callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
-        ExamService.getMyPosted(
-            mapOf()
-        ).awaitAndHandle {
+        ExamService.getMyPosted().awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
-            //TODO: here!!!!!!!!!!!!!!!!!
+            ExamModel.updatePosted(it)
             callback(RefreshState.Success(Unit))
         }
     }
@@ -165,12 +164,10 @@ fun getRelatedExam(
     callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
-        ExamService.getMyRelated(
-            mapOf()
-        ).awaitAndHandle {
+        ExamService.getMyRelated().awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
-            //TODO: here!!!!!!!!!!!!!!!!!
+            ExamModel.updateRelated(it)
             callback(RefreshState.Success(Unit))
         }
     }
@@ -193,7 +190,7 @@ fun getExam(
         ).awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
-            //TODO: here!!!!!!!!!!!!!!!!!
+            ExamModel.updateQuestions(it.paper_question)
             callback(RefreshState.Success(Unit))
         }
     }
@@ -212,7 +209,6 @@ fun solveExam(
         ).awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
-            //TODO: here!!!!!!!!!!!!!!!!!
             callback(RefreshState.Success(Unit))
         }
     }
