@@ -126,6 +126,7 @@ object SettingFragment : Fragment() {
         hour = view.findViewById(R.id.time_length_hour)
         min = view.findViewById(R.id.time_length_minute)
         sec = view.findViewById(R.id.time_length_second)
+
         timeLength = hour.text.toString().toLong()*3600 + min.text.toString().toLong()*60 + sec.text.toString().toLong()
 
         timesLimit = view.findViewById(R.id.timeLimitEt)

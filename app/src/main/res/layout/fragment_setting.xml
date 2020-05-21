@@ -121,56 +121,89 @@
             android:layout_height="match_parent"
             android:layout_marginTop="1dp"
             android:layout_weight="1"
+            android:gravity="right"
             android:text="时长:"
             android:textSize="20sp" />
 
         <EditText
             android:id="@+id/time_length_hour"
             android:layout_width="0dp"
+            android:gravity="center"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:ems="10"
             android:inputType="number"
+            android:text="1"
             android:hint="小时"
             />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="h" />
+
         <EditText
             android:id="@+id/time_length_minute"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:inputType="number"
+            android:gravity="center"
             android:ems="10"
+            android:text="0"
             android:hint="分钟"
              />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="40dp"
+            android:layout_height="26dp"
+            android:text="min"
+            android:textSize="20dp" />
         <EditText
             android:id="@+id/time_length_second"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
+            android:gravity="center"
             android:ems="10"
+            android:text="0"
             android:hint="秒"
             android:inputType="number" />
-
         <TextView
-            android:id="@+id/timesLimit"
+            android:id="@+id/text_s"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="2"
-            android:text="次数限制:"
-            android:textSize="20sp" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textSize="20dp"
+            android:text="s" />
 
-        <EditText
-            android:id="@+id/timeLimitEt"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="time" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/timesLimit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="2"
+        android:text="次数限制:"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/linear1"
+        app:layout_constraintTop_toBottomOf="@id/linear1" />
+
+    <EditText
+        app:layout_constraintTop_toTopOf="@id/timesLimit"
+        app:layout_constraintStart_toEndOf="@id/timesLimit"
+        android:id="@+id/timeLimitEt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:ems="10"
+        android:inputType="time" />
     <TextView
         android:id="@+id/textView3"
         android:layout_width="94dp"
@@ -194,8 +227,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        app:layout_constraintStart_toStartOf="@+id/linear1"
-        app:layout_constraintTop_toBottomOf="@+id/linear1" />
+        app:layout_constraintStart_toStartOf="@+id/timesLimit"
+        app:layout_constraintTop_toBottomOf="@+id/timesLimit" />
 
     <Switch
         android:id="@+id/switch2"
