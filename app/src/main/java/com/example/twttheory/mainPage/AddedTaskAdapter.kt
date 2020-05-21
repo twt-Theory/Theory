@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.twttheory.R
+import com.example.twttheory.exam.PostQuestion
 import kotlinx.android.synthetic.main.item_maketask.view.*
 
 class AddedTaskAdapter : RecyclerView.Adapter<AddedTaskAdapter.Holder> {
@@ -23,21 +24,23 @@ class AddedTaskAdapter : RecyclerView.Adapter<AddedTaskAdapter.Holder> {
 
     //这两个是条目右边的
     private var context : Context? = null
-    private var data : ArrayList<AddQuestion>? = null
+    private var data : ArrayList<PostQuestion>? = null
 
-    constructor(context: Context, data:ArrayList<AddQuestion>, type : AdapterType){
+    constructor(context: Context, data:ArrayList<PostQuestion>, type : AdapterType){
         this.context = context
         this.data  = data
 
     }
     class Holder(itemView: View?): RecyclerView.ViewHolder(itemView!!){
-        val typeImage = itemView!!.findViewById<ImageView>(R.id.type)                //输入框左边表示题目类型的图片
-        val questionStem = itemView!!.findViewById<EditText>(R.id.question)         //题干的输入框
-        val chooseImageForStem = itemView!!.findViewById<EditText>(R.id.add_image) //为题干选择图片
-        val value = itemView!!.findViewById<EditText>(R.id.value)//分值
-        val necessary = itemView!!.findViewById<CheckBox>(R.id.necessary)//是否必答
-        val random = itemView!!.findViewById<CheckBox>(R.id.random)//选项随机
-        val jump = itemView!!.findViewById<CheckBox>(R.id.random)//跳转到其他题
+        val typeImage: ImageView = itemView!!.findViewById<ImageView>(R.id.type)                //输入框左边表示题目类型的图片
+        val questionStem: EditText = itemView!!.findViewById<EditText>(R.id.question)         //题干的输入框
+    //    val chooseImageForStem = itemView!!.findViewById<EditText>(R.id.add_image) //为题干选择图片 现在暂时不支持
+        val value: EditText = itemView!!.findViewById<EditText>(R.id.value)//分值
+        val necessary: CheckBox = itemView!!.findViewById<CheckBox>(R.id.necessary)//是否必答
+        val random: CheckBox = itemView!!.findViewById<CheckBox>(R.id.random)//选项随机
+        val jump: CheckBox = itemView!!.findViewById<CheckBox>(R.id.random)//跳转到其他题
+        val radioGroup : RadioGroup = itemView!!.findViewById(R.id.selections)
+        val addSelection : Button = itemView!!.findViewById(R.id.add_selection)
 
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -51,8 +54,17 @@ class AddedTaskAdapter : RecyclerView.Adapter<AddedTaskAdapter.Holder> {
 //        }
         holder.itemView.number.text = (position+1).toString()
         //暂时不考虑中途退出的情况
-        var stem = holder.questionStem.text
-        var value = holder.value.text
+        var question = holder.questionStem.text
+        var score = holder.value.text
+        holder.addSelection.setOnClickListener {
+            val editText = EditText(context)
+            holder.radioGroup.addView(editText)
+            var params = editText.layoutParams
+            params.width = 200
+            editText.layoutParams = params
+        }
+        if (data == null) data = ArrayList()
+
 
 
 

@@ -68,11 +68,12 @@
 
     <EditText
         android:id="@+id/start"
-        android:layout_width="203dp"
-        android:layout_height="39dp"
+        android:layout_width="206dp"
+        android:layout_height="49dp"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:ems="10"
+        android:focusable="false"
         android:inputType="datetime"
         app:layout_constraintStart_toEndOf="@+id/time"
         app:layout_constraintTop_toTopOf="@+id/time" />
@@ -84,6 +85,7 @@
         android:layout_marginTop="44dp"
         android:gravity="center"
         android:text="到"
+        android:hint="点击选择开始时间"
         app:layout_constraintEnd_toEndOf="@+id/time"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/time"
@@ -91,24 +93,24 @@
 
     <EditText
         android:id="@+id/end"
-        android:layout_width="203dp"
-        android:layout_height="35dp"
+        android:layout_width="201dp"
+        android:layout_height="48dp"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="24dp"
+        android:hint="点击选择截止日期"
         android:ems="10"
+        android:focusable="false"
         android:inputType="datetime"
         app:layout_constraintStart_toEndOf="@+id/time"
         app:layout_constraintTop_toBottomOf="@+id/start" />
 
+
     <LinearLayout
         android:id="@+id/linear1"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="104dp"
         android:gravity="left"
         app:layout_constraintStart_toStartOf="@+id/time"
         app:layout_constraintTop_toBottomOf="@+id/time">
@@ -117,17 +119,37 @@
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_weight="1"
             android:text="时长:"
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/time_length"
+            android:id="@+id/time_length_hour"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:ems="10"
-            android:inputType="time" />
+            android:inputType="number"
+            android:hint="小时"
+            />
+        <EditText
+            android:id="@+id/time_length_minute"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:ems="10"
+            android:hint="分钟"
+             />
+        <EditText
+            android:id="@+id/time_length_second"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="秒"
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/timesLimit"
@@ -135,6 +157,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
             android:layout_weight="2"
             android:text="次数限制:"
             android:textSize="20sp" />
@@ -147,7 +170,6 @@
             android:ems="10"
             android:inputType="time" />
     </LinearLayout>
-
 
     <TextView
         android:id="@+id/textView3"
