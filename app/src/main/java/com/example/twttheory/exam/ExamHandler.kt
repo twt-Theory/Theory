@@ -8,8 +8,6 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
-//TODO: 暂停任务接口->任务应该有是否暂停的属性
-//TODO：下载操作
 //TODO：Model完善（更新recyclerView）
 
 fun generateRequestBody(requestDataMap: Map<String, String>): Map<String, RequestBody> {
@@ -30,6 +28,8 @@ fun createExam(
     paper_type: Int,
     paper_name: String,
     paper_hint: String,
+    number: Int,
+    is_random: Boolean,
     paper_question: List<PostQuestion>,
     start_time: String,
     end_time: String,
@@ -43,7 +43,8 @@ fun createExam(
             "paper_type" to paper_type.toString(),
             "paper_name" to paper_name,
             "paper_hint" to paper_hint,
-            "number" to paper_question.size.toString(),
+            "number" to number.toString(),
+            "is_random" to is_random.toString(),
             "paper_question" to paper_question.toString(),
             "start_time" to start_time,
             "end_time" to end_time,
@@ -54,7 +55,8 @@ fun createExam(
         ExamService.createTask(generateRequestBody(params)).awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
-            callback(RefreshState.Success(Unit))
+            if (it) callback(RefreshState.Success(Unit))
+            else callback(RefreshState.Error(Unit))
         }
     }
 }
@@ -73,13 +75,14 @@ fun pauseExam(
         ).awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
-            callback(RefreshState.Success(Unit))
+            if (it) callback(RefreshState.Success(Unit))
+            else callback(RefreshState.Error(Unit))
         }
     }
 }
 
 //修改任务限制
-fun changeExam(
+fun changeLimit(
     paper_id: Int,
     paper_name: String,
     paper_hint: String,
@@ -101,10 +104,11 @@ fun changeExam(
             "password" to password,
             "times" to times
         )
-        ExamService.changeTask(generateRequestBody(params)).awaitAndHandle {
+        ExamService.changeLimit(generateRequestBody(params)).awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
-            callback(RefreshState.Success(Unit))
+            if (it) callback(RefreshState.Success(Unit))
+            else callback(RefreshState.Error(Unit))
         }
     }
 }
@@ -123,7 +127,7 @@ fun downloadExam(
         ).awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
-            //TODO: here!!!!!!!!!!!!!!!!!
+            //具体下载操作还没实现!!!!!!!!!!!!!
             callback(RefreshState.Success(Unit))
         }
     }
@@ -143,10 +147,52 @@ fun deleteExam(
         ).awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
+            if (it) callback(RefreshState.Success(Unit))
+            else callback(RefreshState.Error(Unit))
+        }
+    }
+}
+
+//获取修改题目
+fun getChangeExam(
+    paper_id: Int,
+    callback: suspend (RefreshState<Unit>) -> Unit = {}
+) {
+    GlobalScope.launch(Dispatchers.Main) {
+        ExamService.getChangeTask(
+            RequestBody.create(
+                MediaType.parse("multipart/form-data"),
+                paper_id.toString()
+            )
+        ).awaitAndHandle {
+            callback(RefreshState.Failure(it))
+        }?.data?.let {
+            ExamModel.updateChangedQuestion(it)
             callback(RefreshState.Success(Unit))
         }
     }
 }
+
+//提交修改
+fun postChangeExam(
+    question: List<ChangedQuestion>,
+    paper_id: Int,
+    callback: suspend (RefreshState<Unit>) -> Unit = {}
+) {
+    GlobalScope.launch(Dispatchers.Main) {
+        val params = mapOf(
+            "question" to question.toString(),
+            "paper_id" to paper_id.toString()
+        )
+        ExamService.postChangeTask(generateRequestBody(params)).awaitAndHandle {
+            callback(RefreshState.Failure(it))
+        }?.data?.let {
+            if (it) callback(RefreshState.Success(Unit))
+            else callback(RefreshState.Error(Unit))
+        }
+    }
+}
+
 
 //获取我发布的
 fun getPostedExam(
@@ -201,18 +247,22 @@ fun getExam(
 
 //交卷
 fun solveExam(
-    answer: List<String>,
+    paper_id: Int,
+    submit_id: Int,
+    paper_question: List<HandleQuestion>,
     callback: suspend (RefreshState<Unit>) -> Unit = {}
 ) {
     GlobalScope.launch(Dispatchers.Main) {
-        ExamService.solveTask(
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"), answer.toString()
-            )
-        ).awaitAndHandle {
+        val params = mapOf(
+            "paper_id" to paper_id.toString(),
+            "submit_id" to submit_id.toString(),
+            "paper_question" to paper_question.toString()
+        )
+        ExamService.solveTask(generateRequestBody(params)).awaitAndHandle {
             callback(RefreshState.Failure(it))
         }?.data?.let {
-            callback(RefreshState.Success(Unit))
+            if (it) callback(RefreshState.Success(Unit))
+            else callback(RefreshState.Error(Unit))
         }
     }
 }

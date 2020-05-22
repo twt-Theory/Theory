@@ -26,7 +26,7 @@ interface ExamService {
     //修改任务限制
     @Multipart
     @POST("")
-    fun changeTask(
+    fun changeLimit(
         @PartMap
         requestBodyMap: Map<String, RequestBody>
     ): Deferred<CommonBody<Boolean>>
@@ -47,6 +47,22 @@ interface ExamService {
         paper_id: RequestBody
     ): Deferred<CommonBody<Boolean>>
 
+    //获取修改题目
+    @Multipart
+    @POST("")
+    fun getChangeTask(
+        @Part("paper_id")
+        paper_id: RequestBody
+    ): Deferred<CommonBody<List<ChangedQuestion>>>
+
+    //提交修改
+    @Multipart
+    @POST("")
+    fun postChangeTask(
+        @PartMap
+        requestBodyMap: Map<String, RequestBody>
+    ): Deferred<CommonBody<Boolean>>
+
     //获取我发布的
     @POST("")
     fun getMyPosted(): Deferred<CommonBody<List<Posted>>>
@@ -55,7 +71,7 @@ interface ExamService {
     @POST("")
     fun getMyRelated(): Deferred<CommonBody<List<Related>>>
 
-    //答题
+    //答题时获取题目
     @Multipart
     @POST("")
     fun getTask(
@@ -69,12 +85,28 @@ interface ExamService {
     @Multipart
     @POST("")
     fun solveTask(
-        @Part("answer")
-        answer: RequestBody
+        @PartMap
+        requestBodyMap: Map<String, RequestBody>
     ): Deferred<CommonBody<Boolean>>
 
     companion object : ExamService by ServiceFactory()
 }
+
+//修改题目
+data class ChangedQuestion(
+    val question_id: Int,
+    val question: String,
+    val answer: List<String>,
+    val right_id: String,
+    val type: Int,
+    val is_necessary: Boolean,
+    val is_random: Boolean,
+    val score: Int,
+    val need_question: Int,
+    val need_answer: Int,
+    val max_select: Int,
+    val min_select: Int
+)
 
 //"我发布的"问卷
 data class Posted(
@@ -87,7 +119,8 @@ data class Posted(
     val password: String,
     val times: Int,
     val number: Int,
-    val paper_type: Int
+    val paper_type: Int,
+    val is_random: Boolean
 )
 
 //"和我相关的"问卷
@@ -106,16 +139,18 @@ data class Related(
 
 //答题时获取的所有题目
 data class Questions(
-    val paper_question: List<GetQuestion>
+    val paper_question: List<GetQuestion>,
+    val submit_id: Int
 )
 
 //答题时获取的单个题目
 data class GetQuestion(
+    val question_id: Int,
     val question: String,
     val answer: List<String>,
-    val right_id: String,
     val type: Int,
     val is_necessary: Boolean,
+    val is_random: Boolean,
     val score: Int,
     val need_question: Int,
     val need_answer: Int,
@@ -136,4 +171,10 @@ data class PostQuestion(
     val need_answer: Int,
     val max_select: Int,
     val min_select: Int
+)
+
+//交卷时的每道题
+data class HandleQuestion(
+    val question_id: Int,
+    val answer: String
 )

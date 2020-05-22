@@ -42,6 +42,7 @@ data class CommonBody<out T>(
 sealed class RefreshState<M> {
     class Success<M>(val message: M) : RefreshState<M>()
     class Failure<M>(val throwable: Throwable) : RefreshState<M>()
+    class Error<M>(val message: M) : RefreshState<M>()
     class Refreshing<M> : RefreshState<M>()
 }
 
