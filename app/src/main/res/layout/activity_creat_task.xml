@@ -168,10 +168,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:id="@+id/added_questions"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"/>
-                <TextView
+                    android:layout_height="wrap_content"/>
+                <Button
                     android:id="@+id/add"
-                    android:text="添加："
+                    android:text="添加"
                     app:layout_constraintTop_toBottomOf="@id/added_questions"
                     app:layout_constraintStart_toStartOf="parent"
                     android:textSize="20sp"
