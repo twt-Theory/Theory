@@ -2,58 +2,61 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".manage.ManageActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:translationZ="10dp"
         android:background="#D7D7e0"
+        android:translationZ="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/return_button"
-                android:clickable="true"
-                android:src="@drawable/u183"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:src="@drawable/u183" />
+
             <TextView
                 android:id="@+id/title"
-                android:text="管理任务"
-                android:layout_marginLeft="20dp"
-                android:textSize="25sp"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:text="管理任务"
+                android:textSize="25sp" />
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/me"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:src="@drawable/u10" />
             </LinearLayout>
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -62,12 +65,52 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp">
+
+                <Button
+                    android:id="@+id/changeQuesBt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#66ccff"
+                    android:text="修改题目" />
+
+                <Button
+                    android:id="@+id/pauseBt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:background="#66ccff"
+                    android:text="暂停问卷" />
+
+                <Button
+                    android:id="@+id/deleteBt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#66ccff"
+                    android:text="删除问卷" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/modify_restrictions"
                 android:layout_width="381dp"
                 android:layout_height="wrap_content"
-                android:background="#66ccff"
+                android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="#66ccff"
                 android:text="修改限制" />
 
             <LinearLayout
@@ -81,6 +124,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="1513dp">
+
                     <fragment
                         android:id="@+id/setting"
                         android:name="com.example.twttheory.mainPage.SettingFragment"
@@ -88,8 +132,9 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/confirm_button"
                         android:layout_width="150dp"
                         android:layout_height="61dp"
                         android:layout_marginStart="108dp"
@@ -110,7 +155,8 @@
                         android:text="提交人数："
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/button" />
+                        app:layout_constraintTop_toBottomOf="@+id/confirm_button" />
+
                     <TextView
                         android:id="@+id/textView8"
                         android:layout_width="91dp"
@@ -129,7 +175,7 @@
                         android:layout_marginTop="28dp"
                         android:background="#C0C0C0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/button" />
+                        app:layout_constraintTop_toBottomOf="@+id/confirm_button" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout2"
@@ -242,6 +288,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
