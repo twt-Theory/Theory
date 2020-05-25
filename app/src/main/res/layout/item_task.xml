@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:outlineAmbientShadowColor="#CCCCCC"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:background="#66ccff"
-        android:layout_width="300dp"
-        android:layout_height="60dp">
+        android:background="@drawable/myrect"
+        android:translationZ="20dp"
+        android:elevation="10dp"
+        android:layout_width="380dp"
+        android:layout_height="match_parent">
     <TextView
         android:id="@+id/title"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,35 +29,42 @@
         android:layout_height="wrap_content"/>
 
         <TextView
-            app:layout_constraintStart_toEndOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@+id/title"
             android:id="@+id/time"
-            android:text="提交时间"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="18dp"
+            android:layout_marginTop="8dp"
+            android:text="截止时间:2020-5-24 10:00"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <Button
+            android:id="@+id/manage"
+            android:layout_width="72dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:background="@drawable/tect_corner_button"
+            android:elevation="2dp"
+            android:text="任务管理"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toEndOf="@+id/time"
+            app:layout_constraintTop_toTopOf="@+id/time" />
+
+        <Button
+            android:id="@+id/analysis"
+            android:layout_width="72dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/tect_corner_button"
+            android:elevation="2dp"
+            android:text="数据分析"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toEndOf="@+id/manage"
+            app:layout_constraintTop_toTopOf="@+id/manage" />
 
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/manage"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginLeft="10dp"
-        android:text="任务管理"
-        android:background="#CCCCee"
-        app:layout_constraintStart_toEndOf="@+id/card"
-        app:layout_constraintTop_toTopOf="@+id/card" />
-
-    <Button
-        android:id="@+id/analysis"
-        app:layout_constraintStart_toStartOf="@+id/manage"
-        app:layout_constraintTop_toBottomOf="@+id/manage"
-        android:layout_marginTop="10dp"
-        android:text="数据分析"
-        android:background="#6699cc"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

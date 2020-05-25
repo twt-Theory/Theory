@@ -15,6 +15,11 @@ import com.example.twttheory.exam.PostQuestion
 import kotlinx.android.synthetic.main.item_maketask.view.*
 
 class CreatTaskAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    constructor(context: Context, data:ArrayList<QuestionItem>){
+        this.context = context
+        this.data  = data
+
+    }
 
     interface OnItemClickListener{
         fun onItemClick(view: View, position: Int)
@@ -28,11 +33,24 @@ class CreatTaskAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //这两个是条目右边的
     private var context : Context? = null
-    private var data : ArrayList<PostQuestion>? = null
+    private var data : ArrayList<QuestionItem>? = null
 
-    constructor(context: Context, data:ArrayList<PostQuestion>){
-        this.context = context
-        this.data  = data
+
+    //Edit Test 的 text watcher
+    class MyTextWatcher : TextWatcher{
+
+        lateinit var questionItem: QuestionItem
+        override fun afterTextChanged(s: Editable?) {
+            questionItem.score = s.toString().toInt()
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
 
     }
     //出单选题的view holder
@@ -46,10 +64,13 @@ class CreatTaskAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
         val jump: CheckBox = itemView!!.findViewById<CheckBox>(R.id.random)//跳转到其他题
         val selectionsLinearLO : LinearLayout = itemView!!.findViewById(R.id.selections)
         val addSelection : Button = itemView!!.findViewById(R.id.add_selection)
-        val myTextWatcher = MyTextWatcher()
+        val questionItem = QuestionItem()
+        val myTextWatcher : MyTextWatcher = MyTextWatcher()
         init {
-
+            questionStem.addTextChangedListener(myTextWatcher)
+            myTextWatcher.questionItem = questionItem
         }
+
 
     }
     //出多选题的view holder
@@ -104,21 +125,7 @@ class CreatTaskAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-    class MyTextWatcher : TextWatcher{
-        lateinit var answer : String
-        override fun afterTextChanged(s: Editable?) {
-            answer = s.toString()
 
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
-
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val typeArray : Array<Int> = arrayOf(
@@ -144,22 +151,22 @@ class CreatTaskAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //        holder.itemView.setOnClickListener{
 //            onItemClickListener?.onItemClick(holder.itemView,position)
 //        }
+
         when(holder.itemViewType){
             0->{
                 //单选题出题
                 holder as SingleHolder
                 holder.itemView.number.text = (position+1).toString()+"."
+                var question = holder.questionStem.text.toString()
+                var score = holder.valueEt.text.toString()
 
-                var question = holder.questionStem.text
-                var score = holder.valueEt.text
                 var alphaNum : Int = 0
+
                 holder.addSelection.setOnClickListener {
-                    val optionView : OptionView = OptionView(context!!,0,alphaNum)
+                    val optionView : OptionView = OptionView(context!!,0,alphaNum,false)
                     holder.selectionsLinearLO.addView(optionView)
                     var params = optionView.layoutParams
                     alphaNum += 1
-
-
                 }
                 if (data == null) data = ArrayList()
             }
@@ -237,6 +244,7 @@ class CreatTaskAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
     fun getDate() = data
+
     override fun getItemViewType(position: Int): Int {
         return data!![position].type!!
     }

@@ -222,7 +222,7 @@ fun getRelatedExam(
     }
 }
 
-//答题时获取题目
+//答题时获取题目  (没有url，启动不起来，所以暂时注释了)
 fun getExam(
     paper_id: Int,
     password: String,

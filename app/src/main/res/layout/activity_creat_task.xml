@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:translationZ="10dp"
-        android:background="#D7D7e0"
+        android:background="@drawable/myrect"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         >
@@ -63,61 +63,56 @@
             android:layout_height="match_parent">
 
 
-            <Button
-                android:id="@+id/questionnaire"
-                android:layout_width="140dp"
-                android:layout_height="70dp"
-                android:background="#D7D7e0"
-                android:text="问卷"
-                android:textSize="20sp"
-                app:layout_constraintHorizontal_weight="1"
+            <RadioGroup
+                android:id="@+id/type"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                >
+                <RadioButton
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:id="@+id/questionare"
+                    android:text="问卷"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <Button
-
-                android:id="@+id/vote"
-                android:layout_width="140dp"
-                android:layout_height="70dp"
-                android:background="#D7D7e0"
-                android:text="投票"
-                android:textSize="20sp"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/questionnaire"
-                app:layout_constraintTop_toTopOf="@id/questionnaire" />
-
-            <Button
-                android:id="@+id/answer"
-                android:layout_width="135dp"
-                android:layout_height="70dp"
-                android:background="#D7D7e0"
-                android:text="理论答题"
-                android:textSize="20sp"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/vote"
-                app:layout_constraintTop_toTopOf="@id/vote" />
+                <RadioButton
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:id="@+id/vote"
+                    android:text="投票"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RadioButton
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:id="@+id/exam"
+                    android:text="试卷"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RadioGroup>
 
             <Button
                 android:id="@+id/settings"
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                android:background="#66ccff"
-                android:text="设置"
+                android:layout_height="wrap_content"
+                android:background="@drawable/myrect"
+                android:text="设置权限"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@id/questionnaire"
-                app:layout_constraintTop_toBottomOf="@id/questionnaire" />
+                app:layout_constraintStart_toStartOf="@id/type"
+                app:layout_constraintTop_toBottomOf="@id/type" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
 
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="1513dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settings">
@@ -145,64 +140,89 @@
                     android:id="@+id/question_part"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="120dp"
-                    android:layout_marginLeft="120dp"
                     android:gravity="center"
                     android:text="题目"
                     android:textSize="25sp"
                     app:layout_constraintStart_toStartOf="@id/divider"
                     app:layout_constraintTop_toBottomOf="@id/divider" />
 
+                <!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/bulk_import"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    android:id="@+id/added_questions"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"/>-->
                 <Button
+                    android:id="@+id/bulk_import"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="104dp"
-                    android:layout_marginLeft="104dp"
+                    android:layout_marginStart="120dp"
+                    android:layout_marginLeft="120dp"
                     android:layout_marginTop="8dp"
-                    android:id="@+id/bulk_import"
+                    android:background="@drawable/myrect"
                     android:text="批量导入"
                     app:layout_constraintStart_toStartOf="@id/divider"
                     app:layout_constraintTop_toBottomOf="@id/question_part" />
-                <androidx.recyclerview.widget.RecyclerView
+
+                <LinearLayout
                     app:layout_constraintTop_toBottomOf="@id/bulk_import"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:id="@+id/added_questions"
+                    android:layout_marginLeft="60dp"
+                    android:orientation="vertical"
+                    android:id="@+id/questions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <Button
+
+                <TextView
                     android:id="@+id/add"
-                    android:text="添加"
-                    app:layout_constraintTop_toBottomOf="@id/added_questions"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:textSize="20sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="52dp"
+                    android:text="添加"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@id/bulk_import"
+                    app:layout_constraintTop_toBottomOf="@id/questions" />
+
                 <RadioGroup
                     android:id="@+id/choose_type"
                     android:orientation="horizontal"
-                    app:layout_constraintTop_toTopOf="@id/add"
-                    app:layout_constraintStart_toEndOf="@id/add"
-                    android:layout_width="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/add"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <RadioButton
                         android:id="@+id/single_selection"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="单选题" />
+
                     <RadioButton
+                        android:layout_weight="1"
+                        android:text="多选题"
                         android:id="@+id/multiple_selection"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <RadioButton
+                        android:layout_weight="1"
+                        android:text="文本题"
                         android:id="@+id/text_question"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <RadioButton
+                        android:layout_weight="1"
+                        android:text="量表题"
                         android:id="@+id/inventory_problem"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <RadioButton
+                        android:layout_weight="1"
+                        android:text="排序题"
                         android:id="@+id/sequencing_question"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
                 </RadioGroup>
@@ -211,11 +231,13 @@
                     android:id="@+id/preview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
+
                     android:layout_marginTop="44dp"
                     android:text="预览"
-                    app:layout_constraintStart_toStartOf="@id/add"
+                    android:layout_marginLeft="55dp"
+
+                    android:background="@drawable/myrect"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/add" />
                 <Button
                     app:layout_constraintTop_toTopOf="@id/preview"
@@ -223,6 +245,8 @@
                     android:layout_marginLeft="20dp"
                     android:id="@+id/save"
                     android:text="保存"
+
+                    android:background="@drawable/myrect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <Button
@@ -230,7 +254,9 @@
                     app:layout_constraintStart_toEndOf="@id/save"
                     android:layout_marginLeft="20dp"
                     android:id="@+id/release"
+
                     android:text="发布"
+                    android:background="@drawable/myrect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

@@ -1,21 +1,71 @@
 package com.example.twttheory.manage
 
+import android.annotation.SuppressLint
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextWatcher
+import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.example.twttheory.R
-import com.example.twttheory.exam.pauseExam
-import com.example.twttheory.exam.deleteExam
+import com.example.twttheory.exam.*
+import com.example.twttheory.mainPage.MakeQuestionView
+import com.example.twttheory.mainPage.MyTextChangedListener
+import com.example.twttheory.mainPage.OptionView
 import com.example.twttheory.mainPage.SettingFragment
 import com.example.twttheory.service.RefreshState
 import com.example.twttheory.useful.*
 
-class ManageActivity(private val paper_id: Int) : AppCompatActivity() {
+class ManageActivity : AppCompatActivity() {
 
+    var paper_id: Int = -1
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage)
+
+        paper_id = intent.getIntExtra("paper_id",-1)
+        val mFragmentManager = supportFragmentManager
+        val mFragmentTransaction = mFragmentManager.beginTransaction()
+        val  settingFragment = SettingFragment
+        val returnImage = findViewById<ImageView>(R.id.return_button).setOnClickListener{
+            this.finish()
+        }
+        mFragmentTransaction.add(R.id.setting,settingFragment)
+        mFragmentTransaction.commit()
+        //修改题目
+        val changQuestionLL = findViewById<LinearLayout>(R.id.changeQuesLayout)
+        var questionList : MutableList<ChangedQuestion> = ArrayList<ChangedQuestion>()
+        var changedList : MutableList<ChangedQuestion> = ArrayList<ChangedQuestion>()
+        val changedFlag : MutableList<Boolean> = ArrayList<Boolean>()
+        var questionNumber = 1
+        val changeQuestionBT = findViewById<Button>(R.id.changeQuesBt)
+        changeQuestionBT.setOnClickListener {
+            for (i in 0 .. questionList.size){
+                val makeQuestionView = MakeQuestionView(this, questionNumber)
+                //makeQuestionView.questionEt.text = questionList[i].question
+                for (j in 0 .. questionList[i].answer.size){
+                    val optionView = OptionView(this,questionList[i].type,j,false)
+                    val listener = MyTextChangedListener()
+
+                    changedList.add(ChangedQuestion(-1,"-1", listOf("-1"),"-1",0,true,false,1,0,0,4,0))
+                    listener.changedText = changedList[i].answer[j]
+                    listener.changedFlag = changedFlag
+                    listener.position = i
+                    optionView.optionContent.addTextChangedListener(listener)
+
+                    makeQuestionView.addView(optionView,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+                }
+                questionNumber += 1
+                changQuestionLL.addView(makeQuestionView, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+
+            }
+
+        }
         //选择专业限制
         val chooseLimiter: AlertDialog
         val confirmBt = findViewById<Button>(R.id.confirm_button).apply {

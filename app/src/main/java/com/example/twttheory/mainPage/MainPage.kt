@@ -21,6 +21,9 @@ import com.example.twttheory.analysis.AnalysisActivity
 import com.example.twttheory.exam.ExamActivity
 import com.example.twttheory.manage.ManageActivity
 import com.example.twttheory.result.ResultActivity
+import com.haibin.calendarview.Calendar
+import com.haibin.calendarview.CalendarView
+import kotlinx.android.synthetic.main.fragment_setting.*
 
 class MainPage : AppCompatActivity() {
 
@@ -38,16 +41,25 @@ class MainPage : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         taskList = findViewById(R.id.tasks)
         title = findViewById(R.id.title)
-        val creatTaskBotton : Button = findViewById(R.id.creat_task)
+        val creatTaskBotton : TextView = findViewById(R.id.creat_task)
         var tasksOnShow = ArrayList<DataBean>()    //列表显示的问卷
         var allTasksExceptTopTwo = ArrayList<DataBean>()       //实际上所有的问卷
         var myReleasedTasks = ArrayList<DataBean>()         //我发布的问卷
         val tempData = DataBean("大学物理习题","进行中","2020/4/13 21:00 ~ 21:03")
+        val remindCalendar = findViewById<CalendarView>(R.id.calendarView)
         var topTwoItems = listOf<DataBean>(tempData,tempData)
         //Fragment manager
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
 
+        var mCalendar = Calendar()
+        mCalendar.apply {
+            year = 2020
+            month = 4
+            day = 24
+        }
+        remindCalendar.setSchemeColor(707070,0,0)
+        remindCalendar.setSchemeDate(listOf(mCalendar))
         //前两个任务单独显示
         tasksOnShow.add(tempData)
         tasksOnShow.add(tempData)
@@ -62,7 +74,9 @@ class MainPage : AppCompatActivity() {
         joinedAdapter.setOnItemClickListener(object : ListAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int) {
                 val intent = Intent()
-                intent.setClass(this@MainPage,ResultActivity::class.java)
+                intent.putExtra("paper_id",-1)
+                intent.setClass(this@MainPage,ExamActivity::class.java)
+                startActivity(intent)
             }
             override fun onItemLongClick(view: View, position: Int) {
 
@@ -77,8 +91,8 @@ class MainPage : AppCompatActivity() {
                     intent.setClass(this@MainPage,ResultActivity::class.java)
                 }else{
                     intent.setClass(this@MainPage, ExamActivity::class.java)
+                    intent.putExtra("paper-id",-1)
                 }
-
                 startActivity(intent)
             }
 

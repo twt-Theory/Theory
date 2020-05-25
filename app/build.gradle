@@ -64,4 +64,7 @@ dependencies {
     //excel
 
     implementation 'com.google.android.material:material:1.1.0'
+
+    //第三方日历
+    implementation 'com.haibin:calendarview:3.2.9'
 }
