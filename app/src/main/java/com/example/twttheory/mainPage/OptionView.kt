@@ -1,11 +1,17 @@
 package com.example.twttheory.mainPage
 
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import com.example.twttheory.R
+import kotlinx.android.synthetic.main.activity_creat_task.view.*
 import java.util.jar.Attributes
 
 //动态加入这个view， 可以直接产生选项
@@ -26,11 +32,15 @@ class OptionView : LinearLayout {
     lateinit var line : View
     lateinit var lineLP : LayoutParams
 
+    var questionNum : Int = 0
+
     //type ： 单选题还是多选题
-    constructor(context: Context, type : Int, alphabetNum : Int,isExam : Boolean) : super(context) {
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)                           //count 用来记录量表题是加线还是加分段
+    @JvmOverloads
+    constructor(context: Context, type : Int, alphabetNum : Int, isExam : Boolean,count : Int = 0) : super(context) {
         initView(context, alphabetNum)
 
-        gravity = Gravity.CENTER
+        gravity = Gravity.LEFT
         orientation = LinearLayout.HORIZONTAL
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT,100)
 
@@ -43,26 +53,33 @@ class OptionView : LinearLayout {
                 addView(optionMultiple,optionMultipleLP)
             }
             3->{
-                if (alphabetNum!=0){
+                if (count%2 == 0){
                     addView(line,lineLP)
+                }else{
+                    addView(optionSingle,optionSingleLP)
+                    if (isExam){
+                        addView(optionTV,optionTVLP)
+                    }else{
+                        addView(optionContent,optionContentLP)
+                    }
                 }
-                addView(optionSingle,optionSingleLP)
             }
             4->{
                 addView(sequenceImage,sequenceImageLP)
             }
         }
 
-        addView(optionName,optionNameLP)
-        if (isExam){
-            addView(optionTV,optionTVLP)
-        }else{
-            addView(optionContent,optionContentLP)
+        if (type!= 3){
+            addView(optionName,optionNameLP)
+            if (isExam){
+                addView(optionTV,optionTVLP)
+            }else{
+                addView(optionContent,optionContentLP)
+            }
         }
-
-
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun initView(context: Context, alphabetNum: Int){
         optionName = TextView(context)
         optionSingle = RadioButton(context)
@@ -91,7 +108,10 @@ class OptionView : LinearLayout {
         }
 
         line = View(context)
-        lineLP = LayoutParams(50,200)
+        lineLP = LayoutParams(5,100)
+        line.setBackgroundColor(Color.BLACK)
+        lineLP.marginStart = 40
+        lineLP.gravity = Gravity.LEFT
 
         sequenceImage = ImageView(context)
         sequenceImageLP = LayoutParams(60,60)
@@ -102,9 +122,6 @@ class OptionView : LinearLayout {
         }
 
 
-    }
-    fun notifyOtherOptionIsChecked(){
-        optionSingle.isChecked = false
     }
 
 }

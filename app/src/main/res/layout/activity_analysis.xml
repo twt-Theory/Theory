@@ -1,9 +1,341 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".analysis.AnalysisActivity">
+    tools:context=".exam.ExamActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:background="@drawable/myrect"
+            android:layout_height="80dp"
+            android:translationZ="10dp"
+            >
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/return_button"
+                    android:clickable="true"
+                    android:src="@drawable/u183"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="20dp"
+                        android:text="数据分析"
+                        android:textSize="25sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/me"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/u10"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/total_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="185dp"
+                android:text="总体情况"
+                android:textSize="17sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/total_hand_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="提交答卷:100份"
+                android:textSize="17sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/total_text" />
+            <TextView
+                android:id="@+id/total_valid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="有效答卷:100份"
+                android:textSize="17sp"
+                app:layout_constraintLeft_toRightOf="@id/total_hand_in"
+                app:layout_constraintTop_toTopOf="@id/total_hand_in" />
+            <TextView
+                android:id="@+id/total_average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="平均得分:100"
+                android:textSize="17sp"
+                app:layout_constraintLeft_toRightOf="@id/total_valid"
+                app:layout_constraintTop_toTopOf="@id/total_valid" />
+            <TextView
+                android:id="@+id/score_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分数段比例:"
+                android:textSize="24sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/total_hand_in"
+                app:layout_constraintTop_toBottomOf="@id/total_hand_in" />
+
+            <HorizontalScrollView
+                android:id="@+id/progress_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@+id/score_section"
+                app:layout_constraintTop_toBottomOf="@+id/score_section">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+            <TableLayout
+                android:layout_width="600dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:background="@drawable/myrect"
+                >
+
+                <TableRow
+                    android:layout_margin="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+                    <TextView
+                        android:id="@+id/score_sections"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:text="分数段"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/section_one"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="0~60"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/section_two"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="61~70"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/section_three"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="71~80"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/section_four"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="81~90"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/section_five"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="91~100"
+                        android:background="@drawable/myrect_white"
+                        />
+                </TableRow>
+                <TableRow
+                    android:layout_margin="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+                    <TextView
+                        android:id="@+id/rate"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:text="百分比"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/rate_one"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="0%"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/rate_two"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="0%"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/rate_three"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="0%"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/rate_four"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="0%"
+                        android:background="@drawable/myrect_white"
+                        />
+                    <TextView
+                        android:id="@+id/rate_five"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:text="100%"
+                        android:background="@drawable/myrect_white"
+                        />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </TableLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+            <Button
+                app:layout_constraintTop_toBottomOf="@+id/progress_horizontal"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_margin="20dp"
+                android:background="@drawable/myrect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下载结果"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/score_each_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分数段比例:"
+            android:textSize="24sp"
+            android:layout_marginTop="20dp"
+            android:layout_margin="20dp" />
+        <HorizontalScrollView
+            android:id="@+id/each_question_scroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <!--使用addView添加-->
+            <LinearLayout
+                android:id="@+id/each_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"/>
+             </HorizontalScrollView>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200dp"
+                android:layout_gravity="right"
+                android:background="@drawable/myrect"
+                android:text="批改文本题" />
+
+            <Button
+                android:id="@+id/judge_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/myrect"
+                android:text="下载结果" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="详细答卷"
+            android:textSize="24sp"
+            android:layout_marginTop="20dp"
+            android:layout_margin="20dp" />
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/everyone_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </ScrollView>
+
+    </LinearLayout>
+
+</ScrollView>

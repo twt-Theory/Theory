@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginLeft
+import com.example.twttheory.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,17 +33,20 @@ class MakeQuestionView : ConstraintLayout {
     lateinit var settingLLLP :ConstraintLayout.LayoutParams
     lateinit var addSelectionBT : Button
     lateinit var addSelectionBTLP : ConstraintLayout.LayoutParams
-    lateinit var jumpCB : CheckBox
     lateinit var thisLayoutPrams : LinearLayout.LayoutParams
     lateinit var needAET : EditText
     lateinit var needQET : EditText
+
+    lateinit var necessaryCB : CheckBox
+    lateinit var randomCB : CheckBox
+    lateinit var jumpCB : CheckBox
     var optionNumber : Int = 0
     var added : Boolean = false
 
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    constructor (context: Context, questionNumber: Int) : super(context){
-        initView(context,questionNumber)
+    constructor (context: Context, questionNumber: Int,type:Int) : super(context){
+        initView(context,questionNumber,type)
         layoutParams = thisLayoutPrams
 
         addView(typeImage,typeImageLP)
@@ -51,13 +56,13 @@ class MakeQuestionView : ConstraintLayout {
         addView(valueET,valueETLP)
         addView(selectionLO,selectionLOLP)
         addView(settingLL,settingLLLP)
+        if(type == 0 || type == 1 || type == 3 || type == 4)
         addView(addSelectionBT,addSelectionBTLP)
 
     }
-    var type : Int = 0
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    fun initView(context: Context, questionNumber : Int){
+    fun initView(context: Context, questionNumber : Int,type: Int){
         thisLayoutPrams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         thisLayoutPrams.marginStart = 300
         //标识题目类型的图片
@@ -68,6 +73,7 @@ class MakeQuestionView : ConstraintLayout {
         //表示题号的textview
         questionTV = TextView(context)
         questionTV.text = questionNumber.toString()+"."
+        questionTV.id = View.generateViewId()
         questionTVLP = ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         //出题时题目的输入框
         questionEt = EditText(context)
@@ -75,7 +81,7 @@ class MakeQuestionView : ConstraintLayout {
         questionEtLP = ConstraintLayout.LayoutParams(500,ViewGroup.LayoutParams.WRAP_CONTENT)
         questionEtLP.apply {
             leftToRight = typeImage.id
-            baselineToBaseline = typeImage.id
+            baselineToBaseline = questionTV.id
         }
         //提示输入分值的textview
         valueTV = TextView(context)
@@ -103,13 +109,13 @@ class MakeQuestionView : ConstraintLayout {
             leftToLeft = questionEt.id
         }
         //是否必答的checkBox
-        val necessaryCB : CheckBox = CheckBox(context)
+        necessaryCB = CheckBox(context)
         necessaryCB.apply {
             text = "该题必答"
             id = View.generateViewId()
         }
         // 选项随机的check box
-        val randomCB : CheckBox = CheckBox(context)
+        randomCB  = CheckBox(context)
         randomCB.apply {
             text = "选项随机"
             id = View.generateViewId()
@@ -179,6 +185,7 @@ class MakeQuestionView : ConstraintLayout {
         addSelectionBT  = Button(context)
         addSelectionBT.apply {
             id = View.generateViewId()
+            background = getDrawable(context,R.drawable.myrect)
             when(type){
                 0->text = "添加选项"
                 1->text = "添加选项"
@@ -186,6 +193,7 @@ class MakeQuestionView : ConstraintLayout {
                 3->text = "添加分段"
                 4->text = "添加序号项"
             }
+
 
         }
         //添加选项的按钮的Layout Params

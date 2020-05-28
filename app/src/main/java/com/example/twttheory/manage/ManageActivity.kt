@@ -17,6 +17,8 @@ import com.example.twttheory.mainPage.MakeQuestionView
 import com.example.twttheory.mainPage.MyTextChangedListener
 import com.example.twttheory.mainPage.OptionView
 import com.example.twttheory.mainPage.SettingFragment
+import com.example.twttheory.mainPage.UsefulFunctions.initQuestion
+import com.example.twttheory.manage.ManageModel.changedList
 import com.example.twttheory.service.RefreshState
 import com.example.twttheory.useful.*
 
@@ -40,23 +42,23 @@ class ManageActivity : AppCompatActivity() {
         //修改题目
         val changQuestionLL = findViewById<LinearLayout>(R.id.changeQuesLayout)
         var questionList : MutableList<ChangedQuestion> = ArrayList<ChangedQuestion>()
-        var changedList : MutableList<ChangedQuestion> = ArrayList<ChangedQuestion>()
+
         val changedFlag : MutableList<Boolean> = ArrayList<Boolean>()
         var questionNumber = 1
         val changeQuestionBT = findViewById<Button>(R.id.changeQuesBt)
         changeQuestionBT.setOnClickListener {
             for (i in 0 .. questionList.size){
-                val makeQuestionView = MakeQuestionView(this, questionNumber)
+                val makeQuestionView = MakeQuestionView(this, questionNumber,questionList[i].type)
                 //makeQuestionView.questionEt.text = questionList[i].question
                 for (j in 0 .. questionList[i].answer.size){
                     val optionView = OptionView(this,questionList[i].type,j,false)
-                    val listener = MyTextChangedListener()
+                    //val listener = MyTextChangedListener()
 
-                    changedList.add(ChangedQuestion(-1,"-1", listOf("-1"),"-1",0,true,false,1,0,0,4,0))
-                    listener.changedText = changedList[i].answer[j]
-                    listener.changedFlag = changedFlag
-                    listener.position = i
-                    optionView.optionContent.addTextChangedListener(listener)
+                    changedList.add(ManageModel.initQuestion(0))
+//                    listener.changedText = changedList[i].answer[j]
+//                    listener.changedFlag = changedFlag
+//                    listener.position = i
+//                    optionView.optionContent.addTextChangedListener(listener)
 
                     makeQuestionView.addView(optionView,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
                 }
