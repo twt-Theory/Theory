@@ -8,8 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ServiceFactory {
-    private const val TRUSTED_HOST = "news-at.zhihu.com"
-    private const val BASE_URL = "https://$TRUSTED_HOST/api/"
+    private const val BASE_URL = "http://101.200.122.177/api/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
