@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import com.example.twttheory.R
 import com.example.twttheory.mainPage.OptionView
+import com.example.twttheory.mainPage.TaskModel.recordInput
 import com.example.twttheory.service.RefreshState
 import com.example.twttheory.useful.ToastType
 import com.example.twttheory.useful.makeToast
@@ -41,14 +42,18 @@ class ExamActivity : AppCompatActivity() {
         var password = "-1"
         val tempQuestions = ArrayList<GetQuestion>()
         radioButtons = ArrayList()  //存储radioButtons便于控制
-        for (i in 0 .. 10){
+        for (i in 0 until  recordInput.size){
             tempQuestions.add(GetQuestion(i+1,
-                "用细导线均匀密绕成长为1、半径为a(l>>a)、总匝数为N的螺线管,管内充满相对磁导率为u,的均匀磁介质。若线圈中载有稳恒电流1,则管中任意一点的",
-                listOf("磁场强度大小为H=uoNI/1",
-                    "磁感强度大小为B=4oH,NI",
-                    "磁感强度大小为B=4,NI/1",
-                    "磁场强度大小为H=NI/I."),
-                0,true,false,1,-1,-1,1,1))
+                recordInput[i].question,
+                recordInput[i].answer,
+                recordInput[i].type,
+                recordInput[i].is_necessary,
+                recordInput[i].is_random,
+                recordInput[i].score,
+                recordInput[i].need_question,
+                recordInput[i].need_answer,
+                recordInput[i].max_select,
+                recordInput[i].min_select))
         }
         //返回按钮
         val returnImage = findViewById<ImageView>(R.id.return_button)
@@ -91,14 +96,15 @@ class ExamActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun presentPaper(questionList : MutableList<GetQuestion>){
-        for (i in 1 until questionList.size){
+        for (i in 0 until questionList.size){
             val questionView = QuestionView(this,i)
             questionView.questionTV.text = questionList[i].question
             radioButtons.add(ArrayList())
-            for (j in questionList[i].answer.indices){
+            for (j  in 0 until questionList[i].answer.size){
+
                 val optionView = OptionView(this,questionList[i].type,j,true)
                 optionView.optionTV.text = questionList[i].answer[j]
-                radioButtons[i-1].add(optionView.optionSingle)
+                radioButtons[i].add(optionView.optionSingle)
                 questionView.optionsLL.addView(optionView,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
                 //手动把这些radio button写成只能单选
                 if (questionList[i].type == 0){

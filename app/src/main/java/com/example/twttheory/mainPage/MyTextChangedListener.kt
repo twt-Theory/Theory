@@ -17,18 +17,24 @@ class MyTextChangedListener(widgitId : WigitId, position: Int) : TextWatcher {
         TaskModel.recordInput[position].apply {
             when(widgitId){
                 WigitId.QUESTION->{
+                    if (s.toString()!="")
                     question = s.toString()
                 }
                 WigitId.VALUE->{
+                    if (s.toString()!="")
                     score = s.toString().toInt()
                 }
                 WigitId.NEED_QUESTION->{
+                    if (s.toString()!="")
                     need_question = s.toString().toInt()
                 }
                 WigitId.NEED_ANSWER->{
+                    if (s.toString()!="")
                     need_answer = s.toString().toInt()
                 }
                 WigitId.OPTION_CONTENT->{
+                    if (s.toString()!="")
+                    answer[optionNum] = s.toString()
 
                 }
 

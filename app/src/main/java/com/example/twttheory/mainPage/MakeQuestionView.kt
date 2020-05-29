@@ -41,6 +41,7 @@ class MakeQuestionView : ConstraintLayout {
     lateinit var randomCB : CheckBox
     lateinit var jumpCB : CheckBox
     var optionNumber : Int = 0
+    var questionNumber : Int = 0
     var added : Boolean = false
 
 
@@ -49,6 +50,7 @@ class MakeQuestionView : ConstraintLayout {
         initView(context,questionNumber,type)
         layoutParams = thisLayoutPrams
 
+        this.questionNumber = questionNumber
         addView(typeImage,typeImageLP)
         addView(questionTV,questionTVLP)
         addView(questionEt,questionEtLP)

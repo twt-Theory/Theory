@@ -23,7 +23,8 @@ class QuestionView : ConstraintLayout{
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     constructor(context: Context, questionNumber : Int) : super(context){
         initView(context,questionNumber)
-        numberTV.text = "$questionNumber."
+        val number = questionNumber+1
+        numberTV.text = "$number."
         addView(numberTV,numberTVLP)
         addView(questionTV,questionTVLP)
         addView(optionsLL,optionsLLLP)

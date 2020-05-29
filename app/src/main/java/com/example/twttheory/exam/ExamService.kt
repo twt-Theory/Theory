@@ -5,94 +5,140 @@ import com.example.twttheory.service.ServiceFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.RequestBody
 import retrofit2.http.*
+import java.util.*
 
 interface ExamService {
+    //    测试用
+    @Headers("Content-type:application/json;charset=UTF-8")
+    @POST("test")
+    fun test(
+        @Body
+        requestBody: RequestBody
+    ): Deferred<CommonBody<Data>>
+
+//    @JvmSuppressWildcards
+//    @FormUrlEncoded
+//    @POST("test")
+//    fun test(
+//        @FieldMap map: Map<String, String>
+//    ): Deferred<Test1>
+
     //创建新任务
-    @Multipart
-    @POST("")
+    @JvmSuppressWildcards
+    @FormUrlEncoded
+    @POST("createPaper")
     fun createTask(
-        @PartMap
-        requestBodyMap: Map<String, RequestBody>
+        @FieldMap map: Map<String, Objects>
     ): Deferred<CommonBody<Boolean>>
 
     //暂停任务
-    @Multipart
+    @JvmSuppressWildcards
+    @FormUrlEncoded
     @POST("")
     fun pauseTask(
-        @Part("paper_id")
-        paper_id: RequestBody
+        @Field("paper_id")
+        paper_id: Int
     ): Deferred<CommonBody<Boolean>>
 
     //修改任务限制
-    @Multipart
-    @POST("")
+    @JvmSuppressWildcards
+    @FormUrlEncoded
+    @POST("alterPaper")
     fun changeLimit(
-        @PartMap
-        requestBodyMap: Map<String, RequestBody>
+        @FieldMap map: Map<String, String>
     ): Deferred<CommonBody<Boolean>>
 
     //下载问卷
-    @Multipart
+    @JvmSuppressWildcards
+    @FormUrlEncoded
     @POST("")
     fun downloadTask(
-        @Part("paper_id")
-        paper_id: RequestBody
+        @Field("paper_id")
+        paper_id: Int
     ): Deferred<CommonBody<String>>
 
     //删除问卷
-    @Multipart
+    @JvmSuppressWildcards
+    @FormUrlEncoded
     @POST("")
     fun deleteTask(
-        @Part("paper_id")
-        paper_id: RequestBody
+        @Field("paper_id")
+        paper_id: Int
     ): Deferred<CommonBody<Boolean>>
 
     //获取修改题目
-    @Multipart
-    @POST("")
+    @JvmSuppressWildcards
+    @FormUrlEncoded
+    @POST("toAlterQuestion")
     fun getChangeTask(
-        @Part("paper_id")
-        paper_id: RequestBody
-    ): Deferred<CommonBody<List<ChangedQuestion>>>
+        @Field("paper_id")
+        paper_id: Int
+    ): Deferred<CommonBody<ChangedQuestions>>
 
     //提交修改
-    @Multipart
-    @POST("")
+    @JvmSuppressWildcards
+    @FormUrlEncoded
+    @POST("AlterQuestion")
     fun postChangeTask(
-        @PartMap
-        requestBodyMap: Map<String, RequestBody>
+        @FieldMap map: Map<String, String>
     ): Deferred<CommonBody<Boolean>>
 
     //获取我发布的
-    @POST("")
+    @GET("getMine")
     fun getMyPosted(): Deferred<CommonBody<List<Posted>>>
 
     //获取和我相关的
-    @POST("")
+    @GET("getAvailable")
     fun getMyRelated(): Deferred<CommonBody<List<Related>>>
 
     //答题时获取题目
-    @Multipart
-    @POST("")
+    @JvmSuppressWildcards
+    @FormUrlEncoded
+    @POST("getPaper")
     fun getTask(
-        @Part("paper_id")
-        paper_id: RequestBody,
-        @Part("password")
-        password: RequestBody
+        @Field("paper_id")
+        paper_id: Int,
+        @Field("password")
+        password: String
     ): Deferred<CommonBody<Questions>>
 
     //交卷
-    @Multipart
-    @POST("")
+    @JvmSuppressWildcards
+    @FormUrlEncoded
+    @POST("postPaper")
     fun solveTask(
-        @PartMap
-        requestBodyMap: Map<String, RequestBody>
+        @FieldMap map: Map<String, String>
     ): Deferred<CommonBody<Boolean>>
+
+    //答卷者查看成绩
+    @JvmSuppressWildcards
+    @FormUrlEncoded
+    @POST("catScore")
+    fun catScore(
+        @Field("paper_id")
+        paper_id: Int
+    ): Deferred<CommonBody<List<PaperInfo>>>
 
     companion object : ExamService by ServiceFactory()
 }
 
-//修改题目
+data class Data(
+    val `0`: Int,
+    val `1`: Int,
+    val `2`: Int,
+    val test3: Test3
+)
+
+data class Test3(
+    val test3_1: List<Int>,
+    val test3_2: List<Int>
+)
+
+//获取修改题目
+data class ChangedQuestions(
+    val question: List<ChangedQuestion>
+)
+
 data class ChangedQuestion(
     val question_id: Int,
     val question: String,
@@ -178,3 +224,20 @@ data class HandleQuestion(
     val question_id: Int,
     val answer: String
 )
+
+//做题者的问卷信息
+data class PaperInfo(
+    val is_judged: Boolean,
+    val total_Score: Int,
+    val question: List<QuestionInfo>
+)
+
+//每道题的信息
+data class QuestionInfo(
+    val question: String,
+    val options: String,
+    val my_answer: String,
+    val right_id: String,
+    val type: Int,
+    val score: Int)
+

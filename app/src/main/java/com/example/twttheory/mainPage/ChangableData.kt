@@ -1,5 +1,7 @@
 package com.example.twttheory.mainPage
 
+import com.example.twttheory.exam.PostQuestion
+
 class ChangableData {
     //修改题目
     data class ChangableChangedQuestion(
@@ -70,7 +72,7 @@ class ChangableData {
     //创建新任务时的每一道题
     data class ChangablePostQuestion(
         var question: String,
-        var answer: List<String>,
+        var answer: MutableList<String>,
         var right_id: String,
         var type: Int,
         var is_necessary: Boolean,
