@@ -12,10 +12,18 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Switch
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 
 import com.example.twttheory.R
+import com.example.twttheory.enums.WigitId
 import com.example.twttheory.exam.*
+import com.example.twttheory.mainPage.TaskModel.endTime
+import com.example.twttheory.mainPage.TaskModel.lastTime
+import com.example.twttheory.mainPage.TaskModel.paperHint
+import com.example.twttheory.mainPage.TaskModel.password
+import com.example.twttheory.mainPage.TaskModel.startTime
+import com.example.twttheory.mainPage.TaskModel.times
 import com.example.twttheory.service.RefreshState
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -46,7 +54,7 @@ object SettingFragment : Fragment() {
     private lateinit var endDateTime: String
     private var startDateTimeStamp: Long = 0
     private var endDateTimeStamp: Long = 0
-    private var timeLength: Long = 0
+    private var timeLength: Int = 0
 
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
@@ -55,8 +63,24 @@ object SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_setting, container, false)
+        val passwordTV : TextView = view.findViewById(R.id.passWordTV)
         titleEt = view.findViewById(R.id.title1)
         insEt = view.findViewById(R.id.instruction_input)
+        passwordEt = view.findViewById(R.id.pswd)
+        timesLimit = view.findViewById<EditText>(R.id.timeLimitEt)
+
+        passwordEt.visibility = View.INVISIBLE
+        passwordTV.visibility = View.INVISIBLE
+        isHasPW = view.findViewById(R.id.hasPassword)
+        isHasPW.setOnClickListener {
+            if (passwordEt.visibility == View.INVISIBLE){
+                passwordEt.visibility = View.VISIBLE
+                passwordTV.visibility = View.VISIBLE
+            }else{
+                passwordEt.visibility = View.INVISIBLE
+                passwordTV.visibility = View.INVISIBLE
+            }
+        }
         start = view.findViewById<EditText>(R.id.start).apply {
             inputType = InputType.TYPE_NULL
             setOnClickListener {
@@ -80,6 +104,7 @@ object SettingFragment : Fragment() {
                                 startDateTime =
                                     "$year-$displayedMonth-$dayOfMonth $hourOfDay:$mMinute:00"
                                 startDateTimeStamp = getTimestamp(startDateTime)
+                                startTime = startDateTime               //同步到Model
                             },
                             mDay,
                             mMinute,
@@ -112,10 +137,11 @@ object SettingFragment : Fragment() {
                         val timePicker = TimePickerDialog(
                             context,
                             TimePickerDialog.OnTimeSetListener { _, hourOfDay, _ ->
-                                end.hint = "$year-$displayedMonth-$dayOfMonth $hourOfDay-$mMinute"
+                                end.hint = "$year-$displayedMonth-$dayOfMonth $hourOfDay:$mMinute:00"
                                 endDateTime =
                                     "$year-$displayedMonth-$dayOfMonth $hourOfDay:$mMinute:00"
                                 endDateTimeStamp = getTimestamp(endDateTime)
+                                endTime   = endDateTime       //同步到Model
                             },
                             mDay,
                             mMinute,
@@ -134,23 +160,35 @@ object SettingFragment : Fragment() {
         //     durationEt = view.findViewById(R.id.time_length)
         hour = view.findViewById(R.id.time_length_hour)
         min = view.findViewById(R.id.time_length_minute)
-        sec = view.findViewById(R.id.time_length_second)
 
-        timeLength = hour.text.toString().toLong() * 3600 + min.text.toString()
-            .toLong() * 60 + sec.text.toString().toLong()
+
+        timeLength = hour.text.toString().toInt() * 60 + min.text.toString()
+            .toInt()
 
         timesLimit = view.findViewById(R.id.timeLimitEt)
         isRandomSw = view.findViewById(R.id.randomSwitch)
         numberEt = view.findViewById(R.id.numberEt)
-        isHasPW = view.findViewById(R.id.switch1)
+        isHasPW = view.findViewById(R.id.hasPassword)
         passwordEt = view.findViewById(R.id.pswd)
         //下面的功能还没实现
         isHasLimit = view.findViewById(R.id.switch2)
         needNumber = view.findViewById(R.id.checkBox)
         majorLimit = view.findViewById(R.id.major_limit)
         gradeLimit = view.findViewById(R.id.checkBox3)
+
+
+
+
+        titleEt.addTextChangedListener(TextChangedListener(WigitId.PAPER_TITLE,0))
+        paperHint = insEt.text.toString()
+        lastTime  = timeLength
+        if (timesLimit.text.toString() != "")
+        times     = timesLimit.text.toString().toInt()
+        if (passwordEt.text.toString() != "")
+        password  = passwordEt.toString()
         return view
     }
+
 
     //0为正常返回，1~5为缺少输入项，-1为其他问题
     fun changeSettings(paper_id: Int): Int {

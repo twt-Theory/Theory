@@ -3,7 +3,8 @@ package com.example.twttheory.mainPage
 import com.example.twttheory.exam.PostQuestion
 
 class ChangableData {
-    //修改题目
+
+    //修改题目，比原来的数据类多了一个布尔值：is_changed
     data class ChangableChangedQuestion(
         var question_id: Int,
         var question: String,
@@ -16,7 +17,8 @@ class ChangableData {
         var need_question: Int,
         var need_answer: Int,
         var max_select: Int,
-        var min_select: Int
+        var min_select: Int,
+        var is_changed : Boolean
     )
 
     //"我发布的"问卷

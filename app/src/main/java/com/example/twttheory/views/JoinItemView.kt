@@ -1,4 +1,4 @@
-package com.example.twttheory.mainPage
+package com.example.twttheory.views
 
 import android.content.Context
 import android.view.LayoutInflater

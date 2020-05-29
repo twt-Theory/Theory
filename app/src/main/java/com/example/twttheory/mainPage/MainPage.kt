@@ -4,19 +4,19 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.View
 import android.view.animation.LayoutAnimationController
 import android.view.animation.LinearInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import android.widget.*
 import com.example.twttheory.R
 import com.example.twttheory.analysis.AnalysisActivity
 import com.example.twttheory.exam.ExamActivity
 import com.example.twttheory.exam.Related
 import com.example.twttheory.manage.ManageActivity
+import com.example.twttheory.views.JoinItemView
+import com.example.twttheory.views.ReleaseItemView
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
 
@@ -27,13 +27,15 @@ class MainPage : AppCompatActivity() {
     var taskNumber = 0     //任务数量
     lateinit var title : TextView
     lateinit var relatedList : MutableList<Related>
+    lateinit var myselfImageView: ImageView
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         title = findViewById(R.id.title)
-        val creatTaskBotton : TextView = findViewById(R.id.creat_task)
+
+        val creatTaskBotton : Button = findViewById(R.id.creat_task)
         val remindCalendar = findViewById<CalendarView>(R.id.calendarView)
         val joinList : LinearLayout = findViewById(R.id.joins)
         val releaseList : LinearLayout = findViewById(R.id.tasks)
@@ -41,6 +43,11 @@ class MainPage : AppCompatActivity() {
         val tempRelated = Related(-1,"-1","-1","-1","-1",-1,-1,-1,-1,-1)
         relatedList = arrayListOf(tempRelated,tempRelated,tempRelated)
 
+        //点击头像跳出一个小菜单
+        myselfImageView = findViewById(R.id.me)
+        myselfImageView.setOnClickListener {
+            openContextMenu(myselfImageView)
+        }
 
         for (i in 1 .. 3){
             val joinItemView = JoinItemView(this)
@@ -52,7 +59,8 @@ class MainPage : AppCompatActivity() {
             }
             joinList.addView(joinItemView)
 
-            val releaseItemView = ReleaseItemView(this)
+            val releaseItemView =
+                ReleaseItemView(this)
             releaseItemView.setOnClickListener {
                 val intent = Intent()
                 intent.putExtra("paper_id",-1)
@@ -113,6 +121,24 @@ class MainPage : AppCompatActivity() {
         }
     }
 
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menuInflater.inflate(R.menu.menu,menu)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        registerForContextMenu(myselfImageView)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        registerForContextMenu(myselfImageView)
+    }
 
 }
 

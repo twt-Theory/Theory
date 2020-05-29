@@ -1,4 +1,4 @@
-package com.example.twttheory.mainPage
+package com.example.twttheory.views
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -9,11 +9,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginLeft
 import com.example.twttheory.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class MakeQuestionView : ConstraintLayout {
@@ -36,6 +32,9 @@ class MakeQuestionView : ConstraintLayout {
     lateinit var thisLayoutPrams : LinearLayout.LayoutParams
     lateinit var needAET : EditText
     lateinit var needQET : EditText
+    //修改某一题的按钮
+    lateinit var modifyBT : Button
+    lateinit var modifyLP : ConstraintLayout.LayoutParams
 
     lateinit var necessaryCB : CheckBox
     lateinit var randomCB : CheckBox
@@ -60,6 +59,8 @@ class MakeQuestionView : ConstraintLayout {
         addView(settingLL,settingLLLP)
         if(type == 0 || type == 1 || type == 3 || type == 4)
         addView(addSelectionBT,addSelectionBTLP)
+        addView(modifyBT,modifyLP)
+        modifyBT.visibility = View.INVISIBLE
 
     }
 
@@ -84,6 +85,7 @@ class MakeQuestionView : ConstraintLayout {
         questionEtLP.apply {
             leftToRight = typeImage.id
             baselineToBaseline = questionTV.id
+            marginStart = 30
         }
         //提示输入分值的textview
         valueTV = TextView(context)
@@ -203,8 +205,18 @@ class MakeQuestionView : ConstraintLayout {
         addSelectionBTLP.topToBottom = selectionLO.id
         addSelectionBTLP.leftToLeft = selectionLO.id
 
-
+        //修改某一题的按钮
+        modifyBT = Button(context)
+        modifyLP = LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)
+        modifyBT.apply {
+            text = "修改该题"
+        }
+        modifyLP.apply {
+            topToBottom = addSelectionBT.id
+        }
     }
+
+
 //    val sNextGeneratedId : AtomicInteger = AtomicInteger(1);
 //    fun mGenerateViewId() : Int{
 //        while (true) {

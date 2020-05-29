@@ -1,4 +1,4 @@
-package com.example.twttheory.exam
+package com.example.twttheory.views
 
 import android.content.Context
 import android.os.Build
@@ -8,7 +8,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginLeft
 
 class QuestionView : ConstraintLayout{
     lateinit var numberTV : TextView

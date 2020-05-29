@@ -1,19 +1,30 @@
 package com.example.twttheory.mainPage
 
+import android.content.Intent
+import android.database.Cursor
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.twttheory.R
+import com.example.twttheory.enums.WigitId
 import com.example.twttheory.exam.createExam
+import com.example.twttheory.mainPage.TaskModel.paperType
 import com.example.twttheory.mainPage.TaskModel.questionNumber
 import com.example.twttheory.mainPage.TaskModel.recordInput
 import com.example.twttheory.mainPage.TaskModel.toStandard
 import com.example.twttheory.mainPage.UsefulFunctions.initQuestion
 import com.example.twttheory.service.RefreshState
+import com.example.twttheory.views.MakeQuestionView
+import com.example.twttheory.views.OptionView
+import com.study.fileselectlibrary.utils.PermissionCheckUtils
+import java.io.File
+
 
 class CreatTaskActivity : AppCompatActivity() {
     lateinit var radioButtons : MutableList<MutableList<RadioButton>>
@@ -31,25 +42,42 @@ class CreatTaskActivity : AppCompatActivity() {
         val returnButton = findViewById<ImageView>(R.id.return_button)
         val addedQList = findViewById<LinearLayout>(R.id.questions)
         val typeChoose: RadioGroup = findViewById<RadioGroup>(R.id.choose_type)
-        val b1 = findViewById<RadioButton>(R.id.single_selection)
-        val b2 = findViewById<RadioButton>(R.id.multiple_selection)
-        val b3 = findViewById<RadioButton>(R.id.text_question)
-        val b4 = findViewById<RadioButton>(R.id.inventory_problem)
-        val b5 = findViewById<RadioButton>(R.id.sequencing_question)
         val uploadBT = findViewById<Button>(R.id.bulk_import)
-        var questionInfoList : ArrayList<QuestionItem> = ArrayList<QuestionItem>()
-        val submitBT = findViewById<Button>(R.id.submit)
+        val releaseBT = findViewById<Button>(R.id.release)
         val paperTypeRG = findViewById<RadioGroup>(R.id.type)
         //用来数量表题是应该加线还是加选项
         var countForInventoryProblem : Int = 0
         //存储radioButtons便于控制
         radioButtons = ArrayList()
 
+        //设置批量上传按钮的点击监听事件
+        uploadBT.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT);
+            //intent.setType(“image/*”);//选择图片        //之后还会用到选择图片（出题时用图片当作题目和选项）
+            //intent.setType(“audio/*”); //选择音频
+            //intent.setType(“video/*”); //选择视频 （mp4 3gp 是android支持的视频格式）
+            //intent.setType(“video/*;image/*”);//同时选择视频和图片
+            intent.setType("*/*");//无类型限制
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            startActivityForResult(intent, 1);
+        }
+
+        //打开文件选择器前提醒设置权限
+        PermissionCheckUtils.setOnOnWantToOpenPermissionListener {
+            Toast.makeText(this, "请去设置的应用管理中打开应用读取内存的权限", Toast.LENGTH_SHORT).show();
+        }
+
         //选择问卷类型的radio group 的监听事件
         paperTypeRG.setOnCheckedChangeListener{group, checkedId ->
             when(checkedId){
                 R.id.questionare -> {
-
+                    paperType = 0
+                }
+                R.id.vote ->{
+                    paperType = 1
+                }
+                R.id.exam->{
+                    paperType = 2
                 }
             }
 
@@ -58,16 +86,16 @@ class CreatTaskActivity : AppCompatActivity() {
         returnButton.setOnClickListener {
             this.finish()
         }
+        //显示设置权限fragment
+        settingFragment = SettingFragment
+        mFragmentTransaction.add(R.id.setting,settingFragment!!)
+        mFragmentTransaction.commit()
         //设置权限按钮的点击监听
         settingButton.setOnClickListener {
             if (!isSettingVisible){
-                if (settingFragment == null){
-                    settingFragment = SettingFragment
-                    mFragmentTransaction.add(R.id.setting,settingFragment!!)
-                    mFragmentTransaction.commit()         //不知道为什么没有效果（不能点一次隐藏，再点一次显示）
-                }else{
-                    mFragmentTransaction.show(settingFragment!!)
-                }
+
+                mFragmentTransaction.show(settingFragment!!)
+
                 isSettingVisible = true
             }else{
                 mFragmentTransaction.hide(settingFragment!!)
@@ -81,14 +109,26 @@ class CreatTaskActivity : AppCompatActivity() {
                     //type == 0 是单选题
                     recordInput.add(initQuestion(0))
                     radioButtons.add(ArrayList())
-                    val makeQuestionView = MakeQuestionView(this,questionNumber,0)
+                    val makeQuestionView =
+                        MakeQuestionView(
+                            this,
+                            questionNumber,
+                            0
+                        )
                     makeQuestionView.addSelectionBT.setOnClickListener {
-                        val optionView = OptionView(this,0,makeQuestionView.optionNumber,false)
+                        val optionView = OptionView(
+                            this,
+                            0,
+                            makeQuestionView.optionNumber,
+                            false
+                        )
                         radioButtons[makeQuestionView.questionNumber-1].add(optionView.optionSingle)
                         recordInput[makeQuestionView.questionNumber-1].answer.add("-1")
-                        val listener = MyTextChangedListener(WigitId.OPTION_CONTENT, makeQuestionView.questionNumber-1)
+                        val listener = TextChangedListener(WigitId.OPTION_CONTENT, makeQuestionView.questionNumber-1)
                         listener.optionNum =  makeQuestionView.optionNumber
                         optionView.optionContent.addTextChangedListener(listener)
+//                        if (optionView.optionContent.text.toString()!="")
+//                            recordInput[makeQuestionView.questionNumber-1].answer[makeQuestionView.optionNumber] = optionView.optionContent.text.toString()
                         optionView.optionSingle.setOnCheckedChangeListener { buttonView, isChecked ->
                             if (isChecked){
                                 for (i in radioButtons[makeQuestionView.questionNumber-1]){
@@ -115,11 +155,21 @@ class CreatTaskActivity : AppCompatActivity() {
                     //type == 1 是多选题
                     recordInput.add(initQuestion(1))
                     radioButtons.add(ArrayList())
-                    val makeQuestionView = MakeQuestionView(this,questionNumber,1)
+                    val makeQuestionView =
+                        MakeQuestionView(
+                            this,
+                            questionNumber,
+                            1
+                        )
                     makeQuestionView.addSelectionBT.setOnClickListener {
-                        val optionView = OptionView(this,1,makeQuestionView.optionNumber,false)
+                        val optionView = OptionView(
+                            this,
+                            1,
+                            makeQuestionView.optionNumber,
+                            false
+                        )
                         recordInput[makeQuestionView.questionNumber-1].answer.add("-1")
-                        val listener = MyTextChangedListener(WigitId.OPTION_CONTENT, makeQuestionView.questionNumber-1)
+                        val listener = TextChangedListener(WigitId.OPTION_CONTENT, makeQuestionView.questionNumber-1)
                         listener.optionNum =  makeQuestionView.optionNumber
                         optionView.optionContent.addTextChangedListener(listener)
                         //
@@ -148,7 +198,12 @@ class CreatTaskActivity : AppCompatActivity() {
                 R.id.text_question->{
                     //type == 2 是文本题
                     recordInput.add(initQuestion(2))
-                    val makeQuestionView = MakeQuestionView(this,questionNumber,2)
+                    val makeQuestionView =
+                        MakeQuestionView(
+                            this,
+                            questionNumber,
+                            2
+                        )
                     val textAnswer = EditText(this)
                     makeQuestionView.selectionLO.addView(textAnswer,ViewGroup.LayoutParams.MATCH_PARENT)
                     //还没有确定要怎么记录答案
@@ -159,12 +214,23 @@ class CreatTaskActivity : AppCompatActivity() {
                 }
                 R.id.inventory_problem->{
                     //type == 3 是量表题
-                    val makeQuestionView = MakeQuestionView(this,questionNumber,3)
+                    val makeQuestionView =
+                        MakeQuestionView(
+                            this,
+                            questionNumber,
+                            3
+                        )
 
                     recordInput.add(initQuestion(3))
                     makeQuestionView.addSelectionBT.setOnClickListener {
                         countForInventoryProblem++
-                        val optionView = OptionView(this,3,makeQuestionView.optionNumber,false,countForInventoryProblem)
+                        val optionView = OptionView(
+                            this,
+                            3,
+                            makeQuestionView.optionNumber,
+                            false,
+                            countForInventoryProblem
+                        )
                         bindWidgetWithVariable(makeQuestionView)
                         makeQuestionView.selectionLO.addView(optionView)
                         makeQuestionView.optionNumber += 1
@@ -176,10 +242,20 @@ class CreatTaskActivity : AppCompatActivity() {
                 R.id.sequencing_question->{
                     //type == 4 是顺序题
                     recordInput.add(initQuestion(4))
-                    val makeQuestionView = MakeQuestionView(this,questionNumber,4)
+                    val makeQuestionView =
+                        MakeQuestionView(
+                            this,
+                            questionNumber,
+                            4
+                        )
 
                     makeQuestionView.addSelectionBT.setOnClickListener {
-                        val optionView = OptionView(this,4,makeQuestionView.optionNumber,false)
+                        val optionView = OptionView(
+                            this,
+                            4,
+                            makeQuestionView.optionNumber,
+                            false
+                        )
                         makeQuestionView.selectionLO.addView(optionView)
                         makeQuestionView.optionNumber += 1
                     }
@@ -192,7 +268,7 @@ class CreatTaskActivity : AppCompatActivity() {
         }
 
         //提交按钮的点击监听
-        submitBT.setOnClickListener {
+        releaseBT.setOnClickListener {
             createExam(TaskModel.paperType,
                 TaskModel.paperName,
                 TaskModel.paperHint,
@@ -203,11 +279,16 @@ class CreatTaskActivity : AppCompatActivity() {
                 TaskModel.endTime,
                 TaskModel.lastTime,
                 TaskModel.password,
-                TaskModel.times,
-
-
-
-                )
+                TaskModel.times
+                ){
+                when (it) {
+                    is RefreshState.Success -> {
+                        Toast.makeText(this,"创建问卷成功",Toast.LENGTH_SHORT)
+                        this.finish()
+                    }
+                    else -> Toast.makeText(this,"创建问卷失败，请检查网络配置",Toast.LENGTH_SHORT)
+                }
+            }
         }
     }
     // 初始化一个问题，一开始只知道type，其他都等待用户输入
@@ -215,18 +296,25 @@ class CreatTaskActivity : AppCompatActivity() {
     fun bindWidgetWithVariable(makeQuestionView: MakeQuestionView){
         makeQuestionView.apply {
             //MyTextChangedLintener 会根据不同的id把editText的输入值映射给不同的变量
-            questionEt.addTextChangedListener(MyTextChangedListener(WigitId.QUESTION, makeQuestionView.questionNumber-1))
-            valueET.addTextChangedListener(MyTextChangedListener(WigitId.VALUE, makeQuestionView.questionNumber-1))
+            questionEt.addTextChangedListener(TextChangedListener(WigitId.QUESTION, makeQuestionView.questionNumber-1))
+            valueET.addTextChangedListener(TextChangedListener(WigitId.VALUE, makeQuestionView.questionNumber-1))
             necessaryCB.setOnCheckedChangeListener { buttonView, isChecked ->
                 recordInput[makeQuestionView.questionNumber-1].is_necessary = necessaryCB.isChecked
             }
             randomCB.setOnCheckedChangeListener { buttonView, isChecked ->
                 recordInput[makeQuestionView.questionNumber-1].is_random = randomCB.isChecked
             }
-            needQET.addTextChangedListener(MyTextChangedListener(WigitId.NEED_QUESTION, makeQuestionView.questionNumber-1))
-            needAET.addTextChangedListener(MyTextChangedListener(WigitId.NEED_ANSWER, makeQuestionView.questionNumber-1))
+            needQET.addTextChangedListener(TextChangedListener(WigitId.NEED_QUESTION, makeQuestionView.questionNumber-1))
+            needAET.addTextChangedListener(TextChangedListener(WigitId.NEED_ANSWER, makeQuestionView.questionNumber-1))
 
         }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+    fun file(){
 
     }
 }

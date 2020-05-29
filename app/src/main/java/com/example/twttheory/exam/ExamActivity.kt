@@ -1,37 +1,21 @@
 package com.example.twttheory.exam
 
-import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.children
 import com.example.twttheory.R
-import com.example.twttheory.mainPage.OptionView
+import com.example.twttheory.views.OptionView
+import com.example.twttheory.mainPage.TaskModel.paperName
 import com.example.twttheory.mainPage.TaskModel.recordInput
-import com.example.twttheory.service.RefreshState
-import com.example.twttheory.useful.ToastType
-import com.example.twttheory.useful.makeToast
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
-import java.lang.Exception
+import com.example.twttheory.views.QuestionView
 
 class ExamActivity : AppCompatActivity() {
     lateinit var questionsLL: LinearLayout
     lateinit var radioButtons : MutableList<MutableList<RadioButton>>
+    lateinit var paperNameTV : TextView
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +25,9 @@ class ExamActivity : AppCompatActivity() {
         var paperId = -1
         var password = "-1"
         val tempQuestions = ArrayList<GetQuestion>()
-        radioButtons = ArrayList()  //存储radioButtons便于控制
+        paperNameTV = findViewById<TextView>(R.id.paperName)
+        paperNameTV.text = paperName
+        radioButtons = java.util.ArrayList()  //存储radioButtons便于控制
         for (i in 0 until  recordInput.size){
             tempQuestions.add(GetQuestion(i+1,
                 recordInput[i].question,
@@ -97,12 +83,17 @@ class ExamActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun presentPaper(questionList : MutableList<GetQuestion>){
         for (i in 0 until questionList.size){
-            val questionView = QuestionView(this,i)
+            val questionView = QuestionView(this, i)
             questionView.questionTV.text = questionList[i].question
             radioButtons.add(ArrayList())
             for (j  in 0 until questionList[i].answer.size){
 
-                val optionView = OptionView(this,questionList[i].type,j,true)
+                val optionView = OptionView(
+                    this,
+                    questionList[i].type,
+                    j,
+                    true
+                )
                 optionView.optionTV.text = questionList[i].answer[j]
                 radioButtons[i].add(optionView.optionSingle)
                 questionView.optionsLL.addView(optionView,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)

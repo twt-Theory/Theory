@@ -1,4 +1,4 @@
-package com.example.twttheory.mainPage
+package com.example.twttheory.enums
 
 enum class PaperType {
     survey,
