@@ -136,8 +136,8 @@ object SettingFragment : Fragment() {
         min = view.findViewById(R.id.time_length_minute)
         sec = view.findViewById(R.id.time_length_second)
 
-        timeLength = hour.text.toString().toLong() * 3600 + min.text.toString()
-            .toLong() * 60 + sec.text.toString().toLong()
+        timeLength = hour.text.toString().toLong() * 60 + min.text.toString()
+            .toLong()
 
         timesLimit = view.findViewById(R.id.timeLimitEt)
         isRandomSw = view.findViewById(R.id.randomSwitch)
@@ -168,7 +168,7 @@ object SettingFragment : Fragment() {
                     insEt.text.toString(),
                     startDateTime,   //字符串和时间戳都有，字符串是startDateTime, 时间戳是startDateTimeStamp
                     endDateTime,
-                    timeLength.toString(),
+                    timeLength.toInt(),
                     if (isHasPW.isChecked) passwordEt.text.toString() else "",
                     timesLimit.text.toString().toInt(),
                     numberEt.text.toString().toInt(),
