@@ -5,82 +5,62 @@ import com.example.twttheory.service.ServiceFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.RequestBody
 import retrofit2.http.*
-import java.util.*
 
 interface ExamService {
-    //    测试用
+    //测试用
     @Headers("Content-type:application/json;charset=UTF-8")
     @POST("test")
     fun test(
-        @Body
-        requestBody: RequestBody
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<Data>>
 
-//    @JvmSuppressWildcards
-//    @FormUrlEncoded
-//    @POST("test")
-//    fun test(
-//        @FieldMap map: Map<String, String>
-//    ): Deferred<Test1>
-
     //创建新任务
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("createPaper")
     fun createTask(
-        @FieldMap map: Map<String, Objects>
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<Boolean>>
 
-    //暂停任务
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    //暂停任务（暂无）
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("")
     fun pauseTask(
-        @Field("paper_id")
-        paper_id: Int
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<Boolean>>
 
     //修改任务限制
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("alterPaper")
     fun changeLimit(
-        @FieldMap map: Map<String, String>
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<Boolean>>
 
-    //下载问卷
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    //下载问卷（暂无）
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("")
     fun downloadTask(
-        @Field("paper_id")
-        paper_id: Int
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<String>>
 
-    //删除问卷
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    //删除问卷（暂无）
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("")
     fun deleteTask(
-        @Field("paper_id")
-        paper_id: Int
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<Boolean>>
 
     //获取修改题目
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("toAlterQuestion")
     fun getChangeTask(
-        @Field("paper_id")
-        paper_id: Int
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<ChangedQuestions>>
 
     //提交修改
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("AlterQuestion")
     fun postChangeTask(
-        @FieldMap map: Map<String, String>
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<Boolean>>
 
     //获取我发布的
@@ -92,36 +72,37 @@ interface ExamService {
     fun getMyRelated(): Deferred<CommonBody<List<Related>>>
 
     //答题时获取题目
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("getPaper")
     fun getTask(
-        @Field("paper_id")
-        paper_id: Int,
-        @Field("password")
-        password: String
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<Questions>>
 
     //交卷
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("postPaper")
     fun solveTask(
-        @FieldMap map: Map<String, String>
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<Boolean>>
 
     //答卷者查看成绩
-    @JvmSuppressWildcards
-    @FormUrlEncoded
+    @Headers("Content-type:application/json;charset=UTF-8")
     @POST("catScore")
     fun catScore(
-        @Field("paper_id")
-        paper_id: Int
+        @Body requestBody: RequestBody
     ): Deferred<CommonBody<List<PaperInfo>>>
+
+    //简易登录
+    @Headers("Content-type:application/json;charset=UTF-8")
+    @POST("login")
+    fun login(
+        @Body requestBody: RequestBody
+    ): Deferred<CommonBody<Boolean>>
 
     companion object : ExamService by ServiceFactory()
 }
 
+//测试用
 data class Data(
     val `0`: Int,
     val `1`: Int,
@@ -129,16 +110,18 @@ data class Data(
     val test3: Test3
 )
 
+//测试用
 data class Test3(
     val test3_1: List<Int>,
     val test3_2: List<Int>
 )
 
-//获取修改题目
+//“获取修改题目”的Post与返回数据
 data class ChangedQuestions(
     val question: List<ChangedQuestion>
 )
 
+//同上
 data class ChangedQuestion(
     val question_id: Int,
     val question: String,
@@ -154,7 +137,7 @@ data class ChangedQuestion(
     val min_select: Int
 )
 
-//"我发布的"问卷
+//“我发布的问卷”返回数据
 data class Posted(
     val paper_id: Int,
     val paper_name: String,
@@ -169,7 +152,7 @@ data class Posted(
     val is_random: Boolean
 )
 
-//"和我相关的"问卷
+//“和我相关的问卷”返回数据
 data class Related(
     val paper_id: Int,
     val paper_name: String,
@@ -183,7 +166,7 @@ data class Related(
     val score: Int
 )
 
-//答题时获取的所有题目
+//答题时获取的整张问卷
 data class Questions(
     val paper_question: List<GetQuestion>,
     val submit_id: Int
@@ -204,7 +187,7 @@ data class GetQuestion(
     val min_select: Int
 )
 
-//创建新任务时的每一道题
+//创建新任务时的每一道题（用于@Post）
 data class PostQuestion(
     val question: String,
     val answer: List<String>,
@@ -219,13 +202,7 @@ data class PostQuestion(
     val min_select: Int
 )
 
-//交卷时的每道题
-data class HandleQuestion(
-    val question_id: Int,
-    val answer: String
-)
-
-//做题者的问卷信息
+//“答卷者看成绩”返回数据
 data class PaperInfo(
     val is_judged: Boolean,
     val total_Score: Int,
