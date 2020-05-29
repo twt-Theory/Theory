@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Switch
 import androidx.annotation.RequiresApi
@@ -18,8 +17,6 @@ import androidx.annotation.RequiresApi
 import com.example.twttheory.R
 import com.example.twttheory.exam.*
 import com.example.twttheory.service.RefreshState
-import kotlinx.android.synthetic.main.fragment_setting.*
-import java.sql.Time
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,8 +30,9 @@ object SettingFragment : Fragment() {
     private lateinit var insEt: EditText
     private lateinit var start: EditText
     private lateinit var end: EditText
-    private lateinit var durationEt: EditText
     private lateinit var timesLimit: EditText
+    private lateinit var isRandomSw: Switch
+    private lateinit var numberEt: EditText
     private lateinit var isHasPW: Switch
     private lateinit var passwordEt: EditText
     private lateinit var isHasLimit: Switch
@@ -44,11 +42,11 @@ object SettingFragment : Fragment() {
     private lateinit var hour: EditText        //做题用时限制
     private lateinit var min: EditText          //做题用时限制
     private lateinit var sec: EditText         //做题用时限制
-    lateinit var startDateTime: String
-    lateinit var endDateTime: String
-    var startDateTimeStamp: Long = 0
-    var endDateTimeStamp: Long = 0
-    var timeLength: Long = 0
+    private lateinit var startDateTime: String
+    private lateinit var endDateTime: String
+    private var startDateTimeStamp: Long = 0
+    private var endDateTimeStamp: Long = 0
+    private var timeLength: Long = 0
 
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
@@ -57,40 +55,26 @@ object SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_setting, container, false)
-//        var title : String      //问卷题目
-//        var ins : String        //问卷说明
-//        var startDate  : Date       //这里还不知道要怎么写
-//        var endDate : Date
-//        var startTime  : Time      //这里还不知道要怎么写
-//        var endTime : Time
-//        var duration : Timer
-//        var hasPswd : Boolean   //是否有密码
-//        var pswd: String        //密码
-//        var isLimited : Boolean //是否有人员限制
-//        var needId : Boolean   //是否需要输入学号（开启人员限制才能用）
-//        var majorLimit : Boolean  //是否限制专业
-//        var gradeLimit : Boolean  //是否限制年级
-//        var type : PaperType      //问卷类型（调查问卷、投票、理论答题）
         titleEt = view.findViewById(R.id.title1)
         insEt = view.findViewById(R.id.instruction_input)
         start = view.findViewById<EditText>(R.id.start).apply {
             inputType = InputType.TYPE_NULL
             setOnClickListener {
                 val c = Calendar.getInstance()
-                var mYear = c.get(Calendar.YEAR)
-                var mMonth = c.get(Calendar.MONTH)
-                var mDay = c.get(Calendar.DATE)
-                var mHour = c.get(Calendar.HOUR)
-                var mMinute = c.get(Calendar.MINUTE)
-                //  var mSecond = c.get(Calendar.SECOND)
+                val mYear = c.get(Calendar.YEAR)
+                val mMonth = c.get(Calendar.MONTH)
+                val mDay = c.get(Calendar.DATE)
+//                val mHour = c.get(Calendar.HOUR)
+                val mMinute = c.get(Calendar.MINUTE)
+                //  val mSecond = c.get(Calendar.SECOND)
                 val datePicker = DatePickerDialog1(
                     context,
-                    DatePickerDialog1.OnDateSetListener { view, year, month, dayOfMonth ->
+                    DatePickerDialog1.OnDateSetListener { _, year, month, dayOfMonth ->
                         val displayedMonth = month + 1  //实际展示的月份要加一
                         start.hint = "$year-$displayedMonth-$dayOfMonth"
                         val timePicker = TimePickerDialog(
                             context,
-                            TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                            TimePickerDialog.OnTimeSetListener { _, hourOfDay, _ ->
                                 start.hint =
                                     "$year-$displayedMonth-$dayOfMonth $hourOfDay:$mMinute:00"
                                 startDateTime =
@@ -114,20 +98,20 @@ object SettingFragment : Fragment() {
             inputType = InputType.TYPE_CLASS_DATETIME
             setOnClickListener {
                 val c = Calendar.getInstance()
-                var mYear = c.get(Calendar.YEAR)
-                var mMonth = c.get(Calendar.MONTH)
-                var mDay = c.get(Calendar.DATE)
-                var mHour = c.get(Calendar.HOUR)
-                var mMinute = c.get(Calendar.MINUTE)
-                //  var mSecond = c.get(Calendar.SECOND)
+                val mYear = c.get(Calendar.YEAR)
+                val mMonth = c.get(Calendar.MONTH)
+                val mDay = c.get(Calendar.DATE)
+//                val mHour = c.get(Calendar.HOUR)
+                val mMinute = c.get(Calendar.MINUTE)
+                //  val mSecond = c.get(Calendar.SECOND)
                 val datePicker = DatePickerDialog1(
                     context,
-                    DatePickerDialog1.OnDateSetListener { view, year, month, dayOfMonth ->
+                    DatePickerDialog1.OnDateSetListener { _, year, month, dayOfMonth ->
                         val displayedMonth = month + 1  //实际展示的月份要加一
                         end.hint = "$year-$displayedMonth-$dayOfMonth"
                         val timePicker = TimePickerDialog(
                             context,
-                            TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                            TimePickerDialog.OnTimeSetListener { _, hourOfDay, _ ->
                                 end.hint = "$year-$displayedMonth-$dayOfMonth $hourOfDay-$mMinute"
                                 endDateTime =
                                     "$year-$displayedMonth-$dayOfMonth $hourOfDay:$mMinute:00"
@@ -156,7 +140,10 @@ object SettingFragment : Fragment() {
             .toLong() * 60 + sec.text.toString().toLong()
 
         timesLimit = view.findViewById(R.id.timeLimitEt)
+        isRandomSw = view.findViewById(R.id.randomSwitch)
+        numberEt = view.findViewById(R.id.numberEt)
         isHasPW = view.findViewById(R.id.switch1)
+        passwordEt = view.findViewById(R.id.pswd)
         //下面的功能还没实现
         isHasLimit = view.findViewById(R.id.switch2)
         needNumber = view.findViewById(R.id.checkBox)
@@ -171,7 +158,7 @@ object SettingFragment : Fragment() {
         when {
             titleEt.text.isBlank() -> case = 1
             insEt.text.isBlank() -> case = 2
-            durationEt.text.isBlank() -> case = 3
+//            durationEt.text.isBlank() -> case = 3
             timesLimit.text.isBlank() -> case = 4
             isHasPW.isChecked && passwordEt.text.isBlank() -> case = 5
             else -> {
@@ -183,7 +170,9 @@ object SettingFragment : Fragment() {
                     endDateTime,
                     timeLength.toString(),
                     if (isHasPW.isChecked) passwordEt.text.toString() else "",
-                    timesLimit.text.toString()
+                    timesLimit.text.toString().toInt(),
+                    numberEt.text.toString().toInt(),
+                    isRandomSw.isChecked
                 ) {
                     case = when (it) {
                         is RefreshState.Success -> 0
@@ -195,13 +184,13 @@ object SettingFragment : Fragment() {
         return case
     }
 
-    fun getTimestamp(time: String): Long {
-        var timestamp: Long = 0;
+    private fun getTimestamp(time: String): Long {
+        var timestamp: Long = 0
         try {
-            timestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time).getTime();
+            timestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time).time
         } catch (e: ParseException) {
-            e.printStackTrace();
+            e.printStackTrace()
         }
-        return timestamp;
+        return timestamp
     }
 }
