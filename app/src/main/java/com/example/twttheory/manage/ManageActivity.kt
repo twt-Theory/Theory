@@ -26,6 +26,7 @@ class ManageActivity : AppCompatActivity() {
     //存储radioButtons便于控制
     lateinit var radioButtons : MutableList<MutableList<RadioButton>>
     lateinit var changedQuestionList : MutableList<ChangedQuestion>
+    lateinit var totalSaveModifyBT : Button
     var paper_id: Int = -1
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,6 +113,19 @@ class ManageActivity : AppCompatActivity() {
                             finish()
                         }
                         else -> makeToast(this@ManageActivity, "删除问卷失败！", ToastType.Error)
+                    }
+                }
+            }
+        }
+        totalSaveModifyBT.setOnClickListener {
+            postChangeExam(ManageModel.changedList,paper_id){
+                when(it){
+                    is RefreshState.Success->{
+                        makeToast(this@ManageActivity, "修改问卷成功！", ToastType.Success)
+                    }
+                    else -> {
+                        makeToast(this@ManageActivity, "修改问卷失败", ToastType.Error)
+
                     }
                 }
             }

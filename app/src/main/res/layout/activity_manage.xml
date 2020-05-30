@@ -299,6 +299,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </HorizontalScrollView>
+                        <Button
+                            android:background="@drawable/myrect"
+                            android:layout_gravity="center"
+                            android:text="保存修改"
+                            android:id="@+id/total_modify"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
