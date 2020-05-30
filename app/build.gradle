@@ -11,12 +11,14 @@ android {
     }
     defaultConfig {
         applicationId "com.example.twttheory"
-        minSdkVersion 16
+        minSdkVersion 19          //2020年5月30日把这里改成了 19 （原来是16）
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true      //2020年5月30日添加了这一行
     }
 
     buildTypes {
@@ -61,4 +63,6 @@ dependencies {
     implementation files('lib/jxl-2.6.9.jar')
     //文件选择器
     implementation 'com.github.Duckdan:FileSelectDemo:v1.0'
+
+    implementation 'com.android.support:multidex:1.0.3'
 }

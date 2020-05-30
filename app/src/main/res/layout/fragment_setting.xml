@@ -20,17 +20,16 @@
 
     <EditText
         android:id="@+id/title1"
-        android:layout_width="289dp"
+        android:layout_width="281dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="2"
-        android:hint="请输入标题，字符数不多于99"
+        android:hint="请输入标题"
         android:imeOptions="actionNext"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@id/title_text"
-        app:layout_constraintStart_toEndOf="@id/title_text"
-        tools:layout_editor_absoluteX="81dp"
-        tools:layout_editor_absoluteY="8dp" />
+        app:layout_constraintBaseline_toBaselineOf="@id/title_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/title_text" />
 
     <TextView
         android:id="@+id/instruction"
@@ -44,17 +43,16 @@
 
     <EditText
         android:id="@+id/instruction_input"
-        android:layout_width="289dp"
+        android:layout_width="282dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="3"
-        android:hint="请输入说明，字符数不多于999"
+        android:hint="请输入说明"
         android:imeOptions="actionNext"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@id/instruction"
-        app:layout_constraintStart_toEndOf="@id/instruction"
-        tools:layout_editor_absoluteX="81dp"
-        tools:layout_editor_absoluteY="8dp" />
+        app:layout_constraintBaseline_toBaselineOf="@id/instruction"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/instruction" />
 
     <TextView
         android:id="@+id/time"
@@ -73,10 +71,11 @@
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:ems="10"
+        android:hint="点击选择开始时间"
         android:focusable="false"
         android:inputType="datetime"
         app:layout_constraintStart_toEndOf="@id/time"
-        app:layout_constraintTop_toTopOf="@id/time" />
+        app:layout_constraintBaseline_toBaselineOf="@id/time" />
 
     <TextView
         android:id="@+id/textView"
@@ -84,7 +83,7 @@
         android:layout_height="25dp"
         android:layout_marginTop="44dp"
         android:gravity="center"
-        android:hint="点击选择开始时间"
+        android:hint="点击选择结束时间"
         android:text="到"
         app:layout_constraintEnd_toEndOf="@id/time"
         app:layout_constraintHorizontal_bias="1.0"
@@ -103,7 +102,7 @@
         android:hint="点击选择截止日期"
         android:inputType="datetime"
         app:layout_constraintStart_toEndOf="@id/time"
-        app:layout_constraintTop_toBottomOf="@id/start" />
+        app:layout_constraintBaseline_toBaselineOf="@id/textView" />
 
 
     <TextView
@@ -130,7 +129,7 @@
         android:inputType="number"
         android:text="1"
         app:layout_constraintStart_toEndOf="@id/textView2"
-        app:layout_constraintTop_toTopOf="@id/textView2" />
+        app:layout_constraintBaseline_toBaselineOf="@id/textView2" />
 
     <TextView
         android:id="@+id/textView13"
@@ -139,7 +138,7 @@
         android:text="h"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/time_length_hour"
-        app:layout_constraintTop_toTopOf="@id/time_length_hour" />
+        app:layout_constraintBaseline_toBaselineOf="@id/time_length_hour" />
 
     <EditText
         android:id="@+id/time_length_minute"
@@ -152,7 +151,7 @@
         android:inputType="number"
         android:text="0"
         app:layout_constraintStart_toEndOf="@id/textView13"
-        app:layout_constraintTop_toTopOf="@id/textView13" />
+        app:layout_constraintBaseline_toBaselineOf="@id/textView13" />
 
     <TextView
         android:id="@+id/textView14"
@@ -163,7 +162,7 @@
         android:text="min"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/time_length_minute"
-        app:layout_constraintTop_toTopOf="@id/time_length_minute" />
+        app:layout_constraintBaseline_toBaselineOf="@id/time_length_minute" />
 
 
 
@@ -187,9 +186,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:ems="10"
+        android:hint="请输入最大进入次数"
         android:inputType="time"
         app:layout_constraintStart_toEndOf="@id/timesLimit"
-        app:layout_constraintTop_toTopOf="@id/timesLimit" />
+        app:layout_constraintBaseline_toBaselineOf="@id/timesLimit" />
 
     <Switch
         android:id="@+id/randomSwitch"
@@ -226,7 +226,7 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintStart_toEndOf="@id/randomText2"
-        app:layout_constraintTop_toTopOf="@id/randomText2" />
+        app:layout_constraintBaseline_toBaselineOf="@id/randomText2" />
 
     <Switch
         android:id="@+id/hasPassword"
@@ -240,7 +240,7 @@
         android:id="@+id/passWordTV"
         android:layout_width="94dp"
         android:layout_height="29dp"
-        android:text="答题密码:"
+        android:text="答题密码"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/hasPassword"
         app:layout_constraintTop_toTopOf="@id/hasPassword" />
@@ -248,11 +248,12 @@
     <EditText
         android:id="@+id/pswd"
         android:layout_width="212dp"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="请输入答题密码"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@id/passWordTV"
-        app:layout_constraintTop_toTopOf="@id/passWordTV" />
+        app:layout_constraintBaseline_toBaselineOf="@id/passWordTV" />
 
     <Switch
         android:id="@+id/switch2"

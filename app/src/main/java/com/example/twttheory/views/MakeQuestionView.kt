@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginTop
 import com.example.twttheory.R
 
 
@@ -81,28 +82,13 @@ class MakeQuestionView : ConstraintLayout {
         //出题时题目的输入框
         questionEt = EditText(context)
         questionEt.id = View.generateViewId()
-        questionEtLP = ConstraintLayout.LayoutParams(500,ViewGroup.LayoutParams.WRAP_CONTENT)
+        questionEtLP = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         questionEtLP.apply {
             leftToRight = typeImage.id
             baselineToBaseline = questionTV.id
             marginStart = 30
         }
-        //提示输入分值的textview
-        valueTV = TextView(context)
-        valueTV.text = "分值:"
-        valueTV.id = View.generateViewId()
-        valueTVLP = ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-        valueTVLP.apply {
-            leftToRight = questionEt.id
-            baselineToBaseline = questionEt.id
-        }
-        //读取分值的edit text
-        valueET = EditText(context)
-        valueET.hint = "默认为1"
-        valueETLP = ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-            leftToRight = valueTV.id
-            baselineToBaseline = valueTV.id
-        }
+
         //放选项的LinearLayout
         selectionLO = LinearLayout(context)
         selectionLO.id = View.generateViewId()
@@ -111,6 +97,49 @@ class MakeQuestionView : ConstraintLayout {
         selectionLOLP.apply {
             topToBottom = questionEt.id
             leftToLeft = questionEt.id
+        }
+
+        //添加选项 的按钮
+        addSelectionBT  = Button(context)
+        addSelectionBT.apply {
+            id = View.generateViewId()
+            background = getDrawable(context,R.drawable.myrect)
+            when(type){
+                0->text = "添加选项"
+                1->text = "添加选项"
+                2->visibility = View.INVISIBLE
+                3->text = "添加分段"
+                4->text = "添加序号项"
+            }
+
+
+        }
+        //添加选项的按钮的Layout Params
+        addSelectionBTLP = ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)
+        addSelectionBTLP.topToBottom = selectionLO.id
+        addSelectionBTLP.leftToLeft = selectionLO.id
+
+        //提示输入分值的textview
+        valueTV = TextView(context)
+        valueTV.text = "分值:"
+        valueTV.id = View.generateViewId()
+        valueTVLP = ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        valueTVLP.apply {
+            leftToLeft = questionEt.id         //所有的排版都尽量采用了竖向，避免横向空间不足
+            if (type!=2){
+                topToBottom = addSelectionBT.id
+            }else{
+                topToBottom = selectionLO.id
+            }
+            topMargin = 20
+        }
+        //读取分值的edit text
+        valueET = EditText(context)
+        valueET.hint = "默认为1"
+        valueETLP = ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+            leftToRight = valueTV.id
+            baselineToBaseline = valueTV.id
+
         }
         //是否必答的checkBox
         necessaryCB = CheckBox(context)
@@ -145,6 +174,7 @@ class MakeQuestionView : ConstraintLayout {
         //放以上这些设置的LinearLayout
         settingLL = LinearLayout(context)
         settingLL.apply {
+            id = View.generateViewId()
             orientation = RadioGroup.VERTICAL
             //加入“是否必答”复选框
             addView(necessaryCB,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT)
@@ -182,37 +212,20 @@ class MakeQuestionView : ConstraintLayout {
         settingLLLP = ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ConstraintLayout.LayoutParams.WRAP_CONTENT)
         //Selection linear layout layout prams
         settingLLLP.apply {
-            topToTop = selectionLO.id
-            leftToRight = selectionLO.id
+            topMargin = 20
+            topToBottom = valueTV.id
+            leftToLeft = valueTV.id
         }
-        //添加选项 的按钮
-        addSelectionBT  = Button(context)
-        addSelectionBT.apply {
-            id = View.generateViewId()
-            background = getDrawable(context,R.drawable.myrect)
-            when(type){
-                0->text = "添加选项"
-                1->text = "添加选项"
-                2->visibility = View.INVISIBLE
-                3->text = "添加分段"
-                4->text = "添加序号项"
-            }
-
-
-        }
-        //添加选项的按钮的Layout Params
-        addSelectionBTLP = ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)
-        addSelectionBTLP.topToBottom = selectionLO.id
-        addSelectionBTLP.leftToLeft = selectionLO.id
-
         //修改某一题的按钮
         modifyBT = Button(context)
         modifyLP = LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)
         modifyBT.apply {
             text = "修改该题"
+            background = getDrawable(context,R.drawable.myrect)
         }
         modifyLP.apply {
-            topToBottom = addSelectionBT.id
+            topToBottom = settingLL.id
+            startToStart = settingLL.id
         }
     }
 

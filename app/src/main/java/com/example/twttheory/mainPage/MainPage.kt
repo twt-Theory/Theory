@@ -2,14 +2,20 @@ package com.example.twttheory.mainPage
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextMenu
 import android.view.View
 import android.view.animation.LayoutAnimationController
 import android.view.animation.LinearInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.example.twttheory.R
 import com.example.twttheory.analysis.AnalysisActivity
 import com.example.twttheory.exam.ExamActivity
@@ -19,6 +25,7 @@ import com.example.twttheory.views.JoinItemView
 import com.example.twttheory.views.ReleaseItemView
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
+
 
 class MainPage : AppCompatActivity() {
 
@@ -39,6 +46,15 @@ class MainPage : AppCompatActivity() {
         val remindCalendar = findViewById<CalendarView>(R.id.calendarView)
         val joinList : LinearLayout = findViewById(R.id.joins)
         val releaseList : LinearLayout = findViewById(R.id.tasks)
+        //获取屏幕宽高
+        val defaultDisplay = windowManager.defaultDisplay
+        val point = Point()
+        defaultDisplay.getSize(point)
+        val x: Int = point.x
+        val y: Int = point.y
+        TaskModel.screenHeight = x
+        TaskModel.screenHeight = y
+
         //使用网络请求后，把“与我相关的任务”存到“relatedList”里，此处先暂时设定为临时数据
         val tempRelated = Related(-1,"-1","-1","-1","-1",-1,-1,-1,-1,-1)
         relatedList = arrayListOf(tempRelated,tempRelated,tempRelated)

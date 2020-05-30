@@ -70,15 +70,15 @@ object SettingFragment : Fragment() {
         timesLimit = view.findViewById<EditText>(R.id.timeLimitEt)
 
         passwordEt.visibility = View.INVISIBLE
-        passwordTV.visibility = View.INVISIBLE
+
         isHasPW = view.findViewById(R.id.hasPassword)
         isHasPW.setOnClickListener {
             if (passwordEt.visibility == View.INVISIBLE){
                 passwordEt.visibility = View.VISIBLE
-                passwordTV.visibility = View.VISIBLE
+
             }else{
                 passwordEt.visibility = View.INVISIBLE
-                passwordTV.visibility = View.INVISIBLE
+
             }
         }
         start = view.findViewById<EditText>(R.id.start).apply {
@@ -206,7 +206,7 @@ object SettingFragment : Fragment() {
                     insEt.text.toString(),
                     startDateTime,   //字符串和时间戳都有，字符串是startDateTime, 时间戳是startDateTimeStamp
                     endDateTime,
-                    timeLength.toString(),
+                    timeLength,
                     if (isHasPW.isChecked) passwordEt.text.toString() else "",
                     timesLimit.text.toString().toInt(),
                     numberEt.text.toString().toInt(),

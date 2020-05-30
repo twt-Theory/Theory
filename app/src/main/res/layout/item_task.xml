@@ -16,23 +16,23 @@
         android:elevation="10dp"
         android:layout_width="380dp"
         android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:text="对xx的投票\问卷"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="108dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="对xx的投票\问卷"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="18dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="36dp"
             android:text="截止时间:2020-5-24 10:00"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -41,14 +41,13 @@
             android:id="@+id/manage"
             android:layout_width="72dp"
             android:layout_height="20dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/tect_corner_button"
             android:elevation="2dp"
             android:text="任务管理"
             android:textColor="@android:color/white"
-            app:layout_constraintStart_toEndOf="@+id/time"
-            app:layout_constraintTop_toTopOf="@+id/time" />
+            app:layout_constraintStart_toStartOf="@+id/time"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <Button
             android:id="@+id/analysis"

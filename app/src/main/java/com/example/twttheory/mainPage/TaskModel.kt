@@ -16,6 +16,9 @@ object TaskModel {
     var lastTime: Int = 0
     var password: String = "-1"
     var times: Int = 5
+    var screenWidth : Int = 0
+    var screenHeight : Int = 0
+    lateinit var sheetResult : Map<String,List<List<String>>>
     fun toStandard() : MutableList<PostQuestion>{
         val postQuestionList = ArrayList<PostQuestion>()
         recordInput.forEach {

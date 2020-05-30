@@ -123,7 +123,7 @@
 
             <LinearLayout
                 android:layout_width="380dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:orientation="vertical">
@@ -273,7 +273,7 @@
 
                     <LinearLayout
                         android:layout_width="332dp"
-                        android:layout_height="216dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="36dp"
                         android:orientation="vertical"
                         app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
@@ -296,8 +296,8 @@
                             <LinearLayout
                                 android:id="@+id/questionsLL"
                                 android:orientation="horizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
                         </HorizontalScrollView>
 
                     </LinearLayout>

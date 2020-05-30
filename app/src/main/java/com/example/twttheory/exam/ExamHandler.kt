@@ -120,7 +120,7 @@ fun changeLimit(
     paper_hint: String,
     start_time: String,
     end_time: String,
-    last_time: String, //toString()来解决Int与Long的不统一
+    last_time: Int,
     password: String,
     times: Int,
     number: Int, //答卷者做题数量（“题库抽题”）

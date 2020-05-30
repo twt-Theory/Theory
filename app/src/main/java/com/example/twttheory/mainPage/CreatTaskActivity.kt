@@ -1,17 +1,19 @@
 package com.example.twttheory.mainPage
 
+import android.Manifest
+import android.R
 import android.content.Intent
-import android.database.Cursor
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
+import android.os.Parcelable
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.twttheory.R
 import com.example.twttheory.enums.WigitId
 import com.example.twttheory.exam.createExam
 import com.example.twttheory.mainPage.TaskModel.paperType
@@ -20,37 +22,46 @@ import com.example.twttheory.mainPage.TaskModel.recordInput
 import com.example.twttheory.mainPage.TaskModel.toStandard
 import com.example.twttheory.mainPage.UsefulFunctions.initQuestion
 import com.example.twttheory.service.RefreshState
+import com.example.twttheory.utils.ExcelUtils
 import com.example.twttheory.views.MakeQuestionView
 import com.example.twttheory.views.OptionView
+import com.study.fileselectlibrary.AllFileActivity
+import com.study.fileselectlibrary.bean.FileItem
 import com.study.fileselectlibrary.utils.PermissionCheckUtils
 import java.io.File
 
 
 class CreatTaskActivity : AppCompatActivity() {
     lateinit var radioButtons : MutableList<MutableList<RadioButton>>
+    lateinit var uploadBT : Button
+    lateinit var addedQList : LinearLayout
+    lateinit var testTV : TextView
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_creat_task)
+        setContentView(com.example.twttheory.R.layout.activity_creat_task)
 
-        val settingButton : Button = findViewById(R.id.settings)
+        val settingButton : Button = findViewById(com.example.twttheory.R.id.settings)
         var settingFragment : Fragment? = null
         var isSettingVisible = false;
         val mFragmentManager = supportFragmentManager
         val mFragmentTransaction = mFragmentManager.beginTransaction()
-        val returnButton = findViewById<ImageView>(R.id.return_button)
-        val addedQList = findViewById<LinearLayout>(R.id.questions)
-        val typeChoose: RadioGroup = findViewById<RadioGroup>(R.id.choose_type)
-        val uploadBT = findViewById<Button>(R.id.bulk_import)
-        val releaseBT = findViewById<Button>(R.id.release)
-        val paperTypeRG = findViewById<RadioGroup>(R.id.type)
+        val returnButton = findViewById<ImageView>(com.example.twttheory.R.id.return_button)
+        val typeChoose: RadioGroup = findViewById<RadioGroup>(com.example.twttheory.R.id.choose_type)
+
+        val releaseBT = findViewById<Button>(com.example.twttheory.R.id.release)
+        val paperTypeRG = findViewById<RadioGroup>(com.example.twttheory.R.id.type)
         //用来数量表题是应该加线还是加选项
         var countForInventoryProblem : Int = 0
         //存储radioButtons便于控制
         radioButtons = ArrayList()
-
+        addedQList = findViewById<LinearLayout>(com.example.twttheory.R.id.questions)
+        testTV = findViewById<TextView>(com.example.twttheory.R.id.test)
+        //清空TaskModel的列表
+        TaskModel.recordInput.clear()
         //设置批量上传按钮的点击监听事件
+        uploadBT = findViewById<Button>(com.example.twttheory.R.id.bulk_import)
         uploadBT.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT);
             //intent.setType(“image/*”);//选择图片        //之后还会用到选择图片（出题时用图片当作题目和选项）
@@ -70,13 +81,13 @@ class CreatTaskActivity : AppCompatActivity() {
         //选择问卷类型的radio group 的监听事件
         paperTypeRG.setOnCheckedChangeListener{group, checkedId ->
             when(checkedId){
-                R.id.questionare -> {
+                com.example.twttheory.R.id.questionare -> {
                     paperType = 0
                 }
-                R.id.vote ->{
+                com.example.twttheory.R.id.vote ->{
                     paperType = 1
                 }
-                R.id.exam->{
+                com.example.twttheory.R.id.exam->{
                     paperType = 2
                 }
             }
@@ -88,7 +99,7 @@ class CreatTaskActivity : AppCompatActivity() {
         }
         //显示设置权限fragment
         settingFragment = SettingFragment
-        mFragmentTransaction.add(R.id.setting,settingFragment!!)
+        mFragmentTransaction.add(com.example.twttheory.R.id.setting,settingFragment!!)
         mFragmentTransaction.commit()
         //设置权限按钮的点击监听
         settingButton.setOnClickListener {
@@ -105,7 +116,7 @@ class CreatTaskActivity : AppCompatActivity() {
         //题目类型选择的radio group的监听
         typeChoose.setOnCheckedChangeListener { group, checkedId ->
             when(checkedId){
-                R.id.single_selection ->{
+                com.example.twttheory.R.id.single_selection ->{
                     //type == 0 是单选题
                     recordInput.add(initQuestion(0))
                     radioButtons.add(ArrayList())
@@ -151,7 +162,7 @@ class CreatTaskActivity : AppCompatActivity() {
                     questionNumber += 1;
                     group.clearCheck()
                 }
-                R.id.multiple_selection->{
+                com.example.twttheory.R.id.multiple_selection->{
                     //type == 1 是多选题
                     recordInput.add(initQuestion(1))
                     radioButtons.add(ArrayList())
@@ -195,7 +206,7 @@ class CreatTaskActivity : AppCompatActivity() {
                     questionNumber += 1;
                     group.clearCheck()
                 }
-                R.id.text_question->{
+                com.example.twttheory.R.id.text_question->{
                     //type == 2 是文本题
                     recordInput.add(initQuestion(2))
                     val makeQuestionView =
@@ -212,7 +223,7 @@ class CreatTaskActivity : AppCompatActivity() {
                     questionNumber += 1;
                     group.clearCheck()
                 }
-                R.id.inventory_problem->{
+                com.example.twttheory.R.id.inventory_problem->{
                     //type == 3 是量表题
                     val makeQuestionView =
                         MakeQuestionView(
@@ -239,7 +250,7 @@ class CreatTaskActivity : AppCompatActivity() {
                     questionNumber += 1;
                     group.clearCheck()
                 }
-                R.id.sequencing_question->{
+                com.example.twttheory.R.id.sequencing_question->{
                     //type == 4 是顺序题
                     recordInput.add(initQuestion(4))
                     val makeQuestionView =
@@ -311,10 +322,55 @@ class CreatTaskActivity : AppCompatActivity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-    fun file(){
+
+    fun file(view : View){
+        val size = PermissionCheckUtils.checkActivityPermissions(
+            this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            100, null
+        )
+        if (size == 0) {
+            jumpActivity()
+        }
 
     }
+    private fun jumpActivity() {
+        val intent = Intent(this, AllFileActivity::class.java)
+        startActivityForResult(intent, 200)
+        overridePendingTransition(com.study.fileselectlibrary.R.anim.enter, com.study.fileselectlibrary.R.anim.exit)
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String?>, @NonNull grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 100) {
+            var flag = true
+            for (i in permissions.indices) {
+                flag = flag and (grantResults[i] == PackageManager.PERMISSION_GRANTED)
+            }
+            if (flag) {
+                jumpActivity()
+            }
+        }
+    }
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data == null) {
+            return
+        }
+        if (requestCode == 200) {
+            if (resultCode == 200) {
+                val resultFileList: ArrayList<FileItem>? =
+                    data.getParcelableArrayListExtra<FileItem>("file")
+                if (resultFileList != null && resultFileList.size > 0) {
+                    TaskModel.sheetResult = ExcelUtils.xlsJxl(File(resultFileList[0].path))
+                    testTV.text = TaskModel.sheetResult.toString()
+
+                }
+            }
+        }
+    }
+
+
 }

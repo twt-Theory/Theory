@@ -156,8 +156,15 @@ class ManageActivity : AppCompatActivity() {
                    optionView.optionContent.setText(questionList[i].answer[j])
                    radioButtons[i].add(optionView.optionSingle)
                    makeQuestionView.selectionLO.addView(optionView,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+
                    //手动把这些radio button写成只能单选
                    if (questionList[i].type == 0){
+                       //把正确选项选上
+                       if (questionList[i].right_id != "-1"){
+                           //很不明白这里为什么要减4，不减会发生数组越界，index：4，size：1
+                           radioButtons[i][questionList[i].right_id.toInt()-65-4].isChecked = true
+                       }
+                       //设置选择监听
                        optionView.optionSingle.setOnCheckedChangeListener { buttonView, isChecked ->
                            if (isChecked){
                                for (i in radioButtons[i-1]){
@@ -167,6 +174,17 @@ class ManageActivity : AppCompatActivity() {
 
                                }
                            }
+                       }
+                   }
+                   if (questionList[i].type == 1) {
+                       //把正确选项选上
+                       if (questionList[i].right_id != "-1") {
+                           for (l in questionList[i].right_id){
+                               if (l != '#'){
+                                   radioButtons[i][l.toInt() - 65].isChecked = true
+                               }
+                           }
+
                        }
                    }
 
