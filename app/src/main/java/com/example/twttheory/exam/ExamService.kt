@@ -123,18 +123,18 @@ data class ChangedQuestions(
 
 //同上
 data class ChangedQuestion(
-    val question_id: Int,
-    val question: String,
-    val answer: List<String>,
-    val right_id: String,
-    val type: Int,
-    val is_necessary: Boolean,
-    val is_random: Boolean,
-    val score: Int,
-    val need_question: Int,
-    val need_answer: Int,
-    val max_select: Int,
-    val min_select: Int
+    var question_id: Int,
+    var question: String,
+    var answer: List<String>,
+    var right_id: String,
+    var type: Int,
+    var is_necessary: Boolean,
+    var is_random: Boolean,
+    var score: Int,
+    var need_question: Int,
+    var need_answer: Int,
+    var max_select: Int,
+    var min_select: Int
 )
 
 //“我发布的问卷”返回数据
