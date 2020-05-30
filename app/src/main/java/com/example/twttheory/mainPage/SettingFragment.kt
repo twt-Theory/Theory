@@ -176,9 +176,6 @@ object SettingFragment : Fragment() {
         majorLimit = view.findViewById(R.id.major_limit)
         gradeLimit = view.findViewById(R.id.checkBox3)
 
-
-
-
         titleEt.addTextChangedListener(TextChangedListener(WigitId.PAPER_TITLE,0))
         paperHint = insEt.text.toString()
         lastTime  = timeLength

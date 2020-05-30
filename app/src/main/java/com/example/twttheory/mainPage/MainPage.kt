@@ -4,23 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextMenu
 import android.view.View
 import android.view.animation.LayoutAnimationController
 import android.view.animation.LinearInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import com.example.twttheory.R
 import com.example.twttheory.analysis.AnalysisActivity
-import com.example.twttheory.exam.ExamActivity
-import com.example.twttheory.exam.Related
+import com.example.twttheory.exam.*
 import com.example.twttheory.manage.ManageActivity
+import com.example.twttheory.service.RefreshState
 import com.example.twttheory.views.JoinItemView
 import com.example.twttheory.views.ReleaseItemView
 import com.haibin.calendarview.Calendar
@@ -34,6 +29,7 @@ class MainPage : AppCompatActivity() {
     var taskNumber = 0     //任务数量
     lateinit var title : TextView
     lateinit var relatedList : MutableList<Related>
+    lateinit var postedList : MutableList<Posted>
     lateinit var myselfImageView: ImageView
 
     @SuppressLint("ResourceType")
@@ -44,8 +40,8 @@ class MainPage : AppCompatActivity() {
 
         val creatTaskBotton : Button = findViewById(R.id.creat_task)
         val remindCalendar = findViewById<CalendarView>(R.id.calendarView)
-        val joinList : LinearLayout = findViewById(R.id.joins)
-        val releaseList : LinearLayout = findViewById(R.id.tasks)
+        val joinLayout : LinearLayout = findViewById(R.id.joins)
+        val releaseLayout : LinearLayout = findViewById(R.id.tasks)
         //获取屏幕宽高
         val defaultDisplay = windowManager.defaultDisplay
         val point = Point()
@@ -55,9 +51,60 @@ class MainPage : AppCompatActivity() {
         TaskModel.screenHeight = x
         TaskModel.screenHeight = y
 
+        login(301924433){
+            when(it){
+                is RefreshState.Success ->{
+                    Toast.makeText(this,"登陆成功", Toast.LENGTH_SHORT).show()
+                }
+                else ->{
+                    Toast.makeText(this,"登陆失败", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        //获取“与我相关的问卷”
+        getRelatedExam {
+            when (it) {
+                is RefreshState.Success -> {
+                    Toast.makeText(this,"获取问卷成功", Toast.LENGTH_SHORT).show()
+                    relatedList = ExamModel.myRelated
+                    for (i in 0 until relatedList.size){
+                        val joinItemView = JoinItemView(this)
+                        joinItemView.setOnClickListener{
+                            val intent = Intent()
+                            intent.putExtra("paper_id",relatedList[i].paper_id)
+                            intent.setClass(this@MainPage,ExamActivity::class.java)
+                            startActivity(intent)
+                        }
+                        joinLayout.addView(joinItemView)
+                    }
+
+                }
+                else -> Toast.makeText(this,"获取问卷失败，请检查网络配置", Toast.LENGTH_SHORT).show()
+            }
+        }
+        //获取“我发布的问卷”
+        getPostedExam {
+            when (it) {
+                is RefreshState.Success -> {
+                    postedList = ExamModel.myPosted
+                    for (i in 0 until postedList.size){
+                        val releaseItemView = ReleaseItemView(this)
+                        releaseItemView.setOnClickListener{
+                            val intent = Intent()
+                            intent.putExtra("paper_id",postedList[i].paper_id)
+                            intent.setClass(this@MainPage,ManageActivity::class.java)
+                            startActivity(intent)
+                        }
+                        joinLayout.addView(releaseItemView)
+                    }
+
+                }
+                else -> Toast.makeText(this,"获取问卷失败，请检查网络配置", Toast.LENGTH_SHORT).show()
+            }
+        }
         //使用网络请求后，把“与我相关的任务”存到“relatedList”里，此处先暂时设定为临时数据
         val tempRelated = Related(-1,"-1","-1","-1","-1",-1,-1,-1,-1,-1)
-        relatedList = arrayListOf(tempRelated,tempRelated,tempRelated)
 
         //点击头像跳出一个小菜单
         myselfImageView = findViewById(R.id.me)
@@ -65,38 +112,38 @@ class MainPage : AppCompatActivity() {
             openContextMenu(myselfImageView)
         }
 
-        for (i in 1 .. 3){
-            val joinItemView = JoinItemView(this)
-            joinItemView.setOnClickListener{
-                val intent = Intent()
-                intent.putExtra("paper_id",-1)
-                intent.setClass(this@MainPage,ExamActivity::class.java)
-                startActivity(intent)
-            }
-            joinList.addView(joinItemView)
-
-            val releaseItemView =
-                ReleaseItemView(this)
-            releaseItemView.setOnClickListener {
-                val intent = Intent()
-                intent.putExtra("paper_id",-1)
-                intent.setClass(this@MainPage,ExamActivity::class.java)
-                startActivity(intent)
-            }
-            releaseItemView.manageBT.setOnClickListener {
-                val intent = Intent()
-                intent.putExtra("paper_id",-1)
-                intent.setClass(this@MainPage,ManageActivity::class.java)
-                startActivity(intent)
-            }
-            releaseItemView.analysisBT.setOnClickListener {
-                val intent = Intent()
-                intent.putExtra("paper_id",-1)
-                intent.setClass(this@MainPage,AnalysisActivity::class.java)
-                startActivity(intent)
-            }
-            releaseList.addView(releaseItemView)
-        }
+//        for (i in 1 .. 3){
+////            val joinItemView = JoinItemView(this)
+////            joinItemView.setOnClickListener{
+////                val intent = Intent()
+////                intent.putExtra("paper_id",-1)
+////                intent.setClass(this@MainPage,ExamActivity::class.java)
+////                startActivity(intent)
+////            }
+////            joinList.addView(joinItemView)
+//
+//            val releaseItemView =
+//                ReleaseItemView(this)
+//            releaseItemView.setOnClickListener {
+//                val intent = Intent()
+//                intent.putExtra("paper_id",-1)
+//                intent.setClass(this@MainPage,ExamActivity::class.java)
+//                startActivity(intent)
+//            }
+//            releaseItemView.manageBT.setOnClickListener {
+//                val intent = Intent()
+//                intent.putExtra("paper_id",-1)
+//                intent.setClass(this@MainPage,ManageActivity::class.java)
+//                startActivity(intent)
+//            }
+//            releaseItemView.analysisBT.setOnClickListener {
+//                val intent = Intent()
+//                intent.putExtra("paper_id",-1)
+//                intent.setClass(this@MainPage,AnalysisActivity::class.java)
+//                startActivity(intent)
+//            }
+//            releaseLayout.addView(releaseItemView)
+//        }
 
 
         var mCalendar = Calendar()

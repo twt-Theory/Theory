@@ -4,7 +4,7 @@ import com.example.twttheory.exam.ChangedQuestion
 import com.example.twttheory.mainPage.ChangableData
 
 object ManageModel {
-    var changedList : MutableList<ChangableData.ChangableChangedQuestion> = ArrayList()
+    var changedList : MutableList<ChangedQuestion> = ArrayList()
     fun initQuestion( type : Int ) = ChangableData.ChangableChangedQuestion(
         -1,
         "-1",

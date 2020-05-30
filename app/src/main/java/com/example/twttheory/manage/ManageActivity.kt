@@ -25,7 +25,7 @@ class ManageActivity : AppCompatActivity() {
     lateinit var questionsLL : LinearLayout
     //存储radioButtons便于控制
     lateinit var radioButtons : MutableList<MutableList<RadioButton>>
-    lateinit var changedQuestionList : MutableList<ChangableData.ChangableChangedQuestion>
+    lateinit var changedQuestionList : MutableList<ChangedQuestion>
     var paper_id: Int = -1
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,27 +50,21 @@ class ManageActivity : AppCompatActivity() {
         //用来装载题目的横向的LinearLayout
         questionsLL = findViewById(R.id.questionsLL)
 
-        //生成临时数据
-        changedQuestionList = ArrayList()
-        for (i in 0 until  TaskModel.recordInput.size){
-            changedQuestionList.add(
-                ChangableData.ChangableChangedQuestion(
-                i,
-                TaskModel.recordInput[i].question,
-                    TaskModel.recordInput[i].answer,
-                    TaskModel.recordInput[i].right_id,
-                    TaskModel.recordInput[i].type,
-                    TaskModel.recordInput[i].is_necessary,
-                    TaskModel.recordInput[i].is_random,
-                    TaskModel.recordInput[i].score,
-                    TaskModel.recordInput[i].need_question,
-                    TaskModel.recordInput[i].need_answer,
-                    TaskModel.recordInput[i].max_select,
-                    TaskModel.recordInput[i].min_select,
-                    false
-            ))
+        var paperId = intent.getIntExtra("paper_id",-1)
+        getChangeExam(paper_id){
+            when(it){
+                is RefreshState.Success -> {
+                    changedQuestionList = ExamModel.myChangedQuestion
+                    presentQuestions(changedQuestionList)
+                }
+                else -> {
+
+                }
+            }
         }
-        presentQuestions(changedQuestionList)
+        //生成临时数据
+
+
         //选择专业限制
         val chooseLimiter: AlertDialog
         val confirmBt = findViewById<Button>(R.id.confirm_button).apply {
@@ -124,7 +118,7 @@ class ManageActivity : AppCompatActivity() {
         }
     }
    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-   fun presentQuestions(questionList : MutableList<ChangableData.ChangableChangedQuestion>){
+   fun presentQuestions(questionList : MutableList<ChangedQuestion>){
 
            for (i in 0 until questionList.size){
                //新建题目

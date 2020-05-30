@@ -14,7 +14,7 @@ object ExamModel {
 
     fun updateRelated(list: List<Related>) {
         myRelated = list.toMutableList()
-        //TODO: here!!!!!!!!!!!!!!!!
+
     }
 
     fun updateQuestions(list: List<GetQuestion>) {

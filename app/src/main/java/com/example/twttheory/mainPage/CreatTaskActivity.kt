@@ -294,10 +294,10 @@ class CreatTaskActivity : AppCompatActivity() {
                 ){
                 when (it) {
                     is RefreshState.Success -> {
-                        Toast.makeText(this,"创建问卷成功",Toast.LENGTH_SHORT)
+                        Toast.makeText(this,"创建问卷成功",Toast.LENGTH_SHORT).show()
                         this.finish()
                     }
-                    else -> Toast.makeText(this,"创建问卷失败，请检查网络配置",Toast.LENGTH_SHORT)
+                    else -> Toast.makeText(this,"创建问卷失败，请检查网络配置",Toast.LENGTH_SHORT).show()
                 }
             }
         }
