@@ -7,6 +7,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.twttheory.R
+import com.example.twttheory.enums.PaperType
 import com.example.twttheory.views.OptionView
 import com.example.twttheory.mainPage.TaskModel.paperName
 import com.example.twttheory.mainPage.TaskModel.recordInput
@@ -28,6 +29,7 @@ class ExamActivity : AppCompatActivity() {
 
         var paperId = intent.getIntExtra("paper_id",-1)
         var password = "-1"
+
         questionsLL = findViewById(R.id.questions)
         paperNameTV = findViewById<TextView>(R.id.paperName)
         paperNameTV.text = paperName

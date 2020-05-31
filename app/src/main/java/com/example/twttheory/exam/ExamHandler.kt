@@ -118,7 +118,7 @@ fun changeLimit(
     paper_id: Int,
     paper_name: String,
     paper_hint: String,
-    start_time: String,
+    start_time: Long,
     end_time: String,
     last_time: Int,
     password: String,

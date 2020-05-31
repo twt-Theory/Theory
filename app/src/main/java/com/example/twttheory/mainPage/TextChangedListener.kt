@@ -3,6 +3,7 @@ package com.example.twttheory.mainPage
 import android.text.Editable
 import android.text.TextWatcher
 import com.example.twttheory.enums.WigitId
+import com.example.twttheory.mainPage.TaskModel.paperHint
 import com.example.twttheory.mainPage.TaskModel.paperName
 
 class TextChangedListener(widgitId : WigitId, position: Int) : TextWatcher {
@@ -17,6 +18,10 @@ class TextChangedListener(widgitId : WigitId, position: Int) : TextWatcher {
         if (widgitId == WigitId.PAPER_TITLE){
             if (s.toString()!="")
                 paperName = s.toString()
+        }
+        else if (widgitId == WigitId.PAPER_HINT){
+            if (s.toString()!="")
+                paperHint = s.toString()
         }
         else{
             TaskModel.recordInput[position].apply {
