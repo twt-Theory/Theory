@@ -334,7 +334,7 @@ fun login(userId: Int, callback: suspend (RefreshState<Unit>) -> Unit = {}) {
         ExamService.login(
             RequestBody.create(
                 MediaType.parse("application/json;charset=UTF-8"),
-                Gson().toJson(mapOf("userId" to userId))
+                Gson().toJson(mapOf("id" to userId))
             )
         ).awaitAndHandle {
             callback(RefreshState.Failure(it))

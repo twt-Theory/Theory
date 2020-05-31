@@ -64,11 +64,13 @@ interface ExamService {
     ): Deferred<CommonBody<Boolean>>
 
     //获取我发布的
-    @GET("getMine")
+    @Headers("Content-type:application/json;charset=UTF-8")
+    @POST("getMine")
     fun getMyPosted(): Deferred<CommonBody<List<Posted>>>
 
     //获取和我相关的
-    @GET("getAvailable")
+    @Headers("Content-type:application/json;charset=UTF-8")
+    @POST("getAvailable")
     fun getMyRelated(): Deferred<CommonBody<List<Related>>>
 
     //答题时获取题目
