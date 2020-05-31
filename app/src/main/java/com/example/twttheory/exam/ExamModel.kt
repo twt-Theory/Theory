@@ -9,7 +9,6 @@ object ExamModel {
 
     fun updatePosted(list: List<Posted>) {
         myPosted = list.toMutableList()
-        //TODO: here!!!!!!!!!!!!!!!!
     }
 
     fun updateRelated(list: List<Related>) {
@@ -19,16 +18,13 @@ object ExamModel {
 
     fun updateQuestions(list: List<GetQuestion>) {
         myQuestions = list.toMutableList()
-        //TODO: here!!!!!!!!!!!!!!!!
     }
 
     fun updateChangedQuestion(list: List<ChangedQuestion>) {
         myChangedQuestion = list.toMutableList()
-        //TODO: here!!!!!!!!!!!!!!!!
     }
 
     fun updateScoreList(list: List<PaperInfo>) {
         myScoreList = list.toMutableList()
-        //TODO: here!!!!!!!!!!!!!!!!
     }
 }

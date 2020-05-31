@@ -103,7 +103,7 @@ object SettingFragment : Fragment() {
                                 startDateTime =
                                     "$year-$displayedMonth-$dayOfMonth $hourOfDay:$mMinute:00"
                                 startDateTimeStamp = getTimestamp(startDateTime)
-                                startTime = startDateTime               //同步到Model
+                                startTime = startDateTimeStamp             //同步到Model
                             },
                             mDay,
                             mMinute,
@@ -140,7 +140,7 @@ object SettingFragment : Fragment() {
                                 endDateTime =
                                     "$year-$displayedMonth-$dayOfMonth $hourOfDay:$mMinute:00"
                                 endDateTimeStamp = getTimestamp(endDateTime)
-                                endTime   = endDateTime       //同步到Model
+                                endTime   = endDateTimeStamp       //同步到Model
                             },
                             mDay,
                             mMinute,
@@ -201,7 +201,7 @@ object SettingFragment : Fragment() {
                     titleEt.text.toString(),
                     insEt.text.toString(),
                     startDateTimeStamp,   //字符串和时间戳都有，字符串是startDateTime, 时间戳是startDateTimeStamp
-                    endDateTime,
+                    endDateTimeStamp,
                     timeLength,
                     if (isHasPW.isChecked) passwordEt.text.toString() else "",
                     timesLimit.text.toString().toInt(),

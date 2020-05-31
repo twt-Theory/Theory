@@ -130,8 +130,8 @@ data class ChangedQuestion(
     var answer: List<String>,
     var right_id: String,
     var type: Int,
-    var is_necessary: Boolean,
-    var is_random: Boolean,
+    var is_necessary: Int,
+    var is_random: Int,
     var score: Int,
     var need_question: Int,
     var need_answer: Int,
@@ -195,8 +195,8 @@ data class PostQuestion(
     val answer: List<String>,
     val right_id: String,
     val type: Int,
-    val is_necessary: Boolean,
-    val is_random: Boolean,
+    val is_necessary: Int,
+    val is_random: Int,
     val score: Int,
     val need_question: Int,
     val need_answer: Int,
@@ -214,7 +214,7 @@ data class PaperInfo(
 //每道题的信息
 data class QuestionInfo(
     val question: String,
-    val options: List<String>,        //这里改成了list
+    val options: List<String>,
     val my_answer: String,
     val right_id: String,
     val type: Int,

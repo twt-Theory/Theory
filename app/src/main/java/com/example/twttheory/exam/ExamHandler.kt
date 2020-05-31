@@ -58,8 +58,8 @@ fun createExam(
     number: Int,
     is_random: Boolean,
     paper_question: List<PostQuestion>,
-    start_time: String,
-    end_time: String,
+    start_time: Long,
+    end_time: Long,
     last_time: Int,
     password: String,
     times: Int,
@@ -71,7 +71,7 @@ fun createExam(
             "paper_name" to paper_name,
             "paper_hint" to paper_hint,
             "number" to number,
-            "is_random" to is_random,
+            "is_random" to if (is_random) 1 else 0,
             "paper_question" to paper_question,
             "start_time" to start_time,
             "end_time" to end_time,
@@ -119,7 +119,7 @@ fun changeLimit(
     paper_name: String,
     paper_hint: String,
     start_time: Long,
-    end_time: String,
+    end_time: Long,
     last_time: Int,
     password: String,
     times: Int,
@@ -138,7 +138,7 @@ fun changeLimit(
             "password" to password,
             "times" to times,
             "number" to number,
-            "is_random" to is_random
+            "is_random" to if (is_random) 1 else 0
         )
         ExamService.changeLimit(
             RequestBody.create(

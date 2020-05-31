@@ -11,8 +11,8 @@ object TaskModel {
     var paperHint: String = "-1"
     var number: Int = -1
     var isRandom: Boolean = false
-    var startTime: String = "-1"
-    var endTime: String = "-1"
+    var startTime: Long = 0
+    var endTime: Long = 0
     var lastTime: Int = 0
     var password: String = "-1"
     var times: Int = 5
@@ -28,8 +28,8 @@ object TaskModel {
                 it.answer,
                 it.right_id,
                 it.type,
-                it.is_necessary,
-                it.is_random,
+                if (it.is_necessary) 1 else 0,
+                if (it.is_random)1 else 0,
                 it.score,
                 it.need_question,
                 it.need_answer,
