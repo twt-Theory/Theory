@@ -77,6 +77,7 @@
                     android:gravity="center"
                     android:id="@+id/questionare"
                     android:text="问卷"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -86,6 +87,7 @@
                     android:gravity="center"
                     android:id="@+id/vote"
                     android:text="投票"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <RadioButton
@@ -94,6 +96,7 @@
                     android:gravity="center"
                     android:id="@+id/exam"
                     android:text="试卷"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </RadioGroup>

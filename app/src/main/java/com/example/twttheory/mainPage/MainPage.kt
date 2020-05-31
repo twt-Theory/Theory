@@ -55,6 +55,52 @@ class MainPage : AppCompatActivity() {
             when(it){
                 is RefreshState.Success ->{
                     Toast.makeText(this,"登陆成功", Toast.LENGTH_SHORT).show()
+                    //获取“与我相关的问卷”
+                    getRelatedExam {
+                        when (it) {
+                            is RefreshState.Success -> {
+                                Toast.makeText(this,"获取问卷成功", Toast.LENGTH_SHORT).show()
+                                relatedList = ExamModel.myRelated
+                                for (i in 0 until relatedList.size){
+                                    val joinItemView = JoinItemView(this)
+                                    joinItemView.setOnClickListener{
+                                        val intent = Intent()
+                                        intent.putExtra("paper_id",relatedList[i].paper_id)
+                                        intent.setClass(this@MainPage,ExamActivity::class.java)
+                                        startActivity(intent)
+                                    }
+                                    joinLayout.addView(joinItemView)
+                                }
+
+                            }
+                            else -> Toast.makeText(this,"获取问卷失败，请检查网络配置", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    //获取“我发布的问卷”
+                    getPostedExam {
+                        when (it) {
+                            is RefreshState.Success -> {
+                                postedList = ExamModel.myPosted
+                                for (i in 0 until postedList.size){
+                                    val releaseItemView = ReleaseItemView(this)
+                                    releaseItemView.setOnClickListener{
+                                        val intent = Intent()
+                                        intent.putExtra("paper_id",postedList[i].paper_id)
+                                        intent.setClass(this@MainPage,ManageActivity::class.java)
+                                        startActivity(intent)
+                                    }
+                                    joinLayout.addView(releaseItemView)
+                                }
+
+                            }
+                            else -> Toast.makeText(this,"获取问卷失败，请检查网络配置", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+
+
+
+
                 }
                 else ->{
                     Toast.makeText(this,"登陆失败", Toast.LENGTH_SHORT).show()
@@ -62,47 +108,7 @@ class MainPage : AppCompatActivity() {
             }
         }
 
-        //获取“与我相关的问卷”
-        getRelatedExam {
-            when (it) {
-                is RefreshState.Success -> {
-                    Toast.makeText(this,"获取问卷成功", Toast.LENGTH_SHORT).show()
-                    relatedList = ExamModel.myRelated
-                    for (i in 0 until relatedList.size){
-                        val joinItemView = JoinItemView(this)
-                        joinItemView.setOnClickListener{
-                            val intent = Intent()
-                            intent.putExtra("paper_id",relatedList[i].paper_id)
-                            intent.setClass(this@MainPage,ExamActivity::class.java)
-                            startActivity(intent)
-                        }
-                        joinLayout.addView(joinItemView)
-                    }
 
-                }
-                else -> Toast.makeText(this,"获取问卷失败，请检查网络配置", Toast.LENGTH_SHORT).show()
-            }
-        }
-        //获取“我发布的问卷”
-        getPostedExam {
-            when (it) {
-                is RefreshState.Success -> {
-                    postedList = ExamModel.myPosted
-                    for (i in 0 until postedList.size){
-                        val releaseItemView = ReleaseItemView(this)
-                        releaseItemView.setOnClickListener{
-                            val intent = Intent()
-                            intent.putExtra("paper_id",postedList[i].paper_id)
-                            intent.setClass(this@MainPage,ManageActivity::class.java)
-                            startActivity(intent)
-                        }
-                        joinLayout.addView(releaseItemView)
-                    }
-
-                }
-                else -> Toast.makeText(this,"获取问卷失败，请检查网络配置", Toast.LENGTH_SHORT).show()
-            }
-        }
         //使用网络请求后，把“与我相关的任务”存到“relatedList”里，此处先暂时设定为临时数据
         val tempRelated = Related(-1,"-1","-1","-1","-1",-1,-1,-1,-1,-1)
 

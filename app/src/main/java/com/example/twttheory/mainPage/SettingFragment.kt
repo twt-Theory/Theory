@@ -20,7 +20,6 @@ import com.example.twttheory.enums.WigitId
 import com.example.twttheory.exam.*
 import com.example.twttheory.mainPage.TaskModel.endTime
 import com.example.twttheory.mainPage.TaskModel.lastTime
-import com.example.twttheory.mainPage.TaskModel.paperHint
 import com.example.twttheory.mainPage.TaskModel.password
 import com.example.twttheory.mainPage.TaskModel.startTime
 import com.example.twttheory.mainPage.TaskModel.times
@@ -177,7 +176,7 @@ object SettingFragment : Fragment() {
         gradeLimit = view.findViewById(R.id.checkBox3)
 
         titleEt.addTextChangedListener(TextChangedListener(WigitId.PAPER_TITLE,0))
-        paperHint = insEt.text.toString()
+        insEt.addTextChangedListener(TextChangedListener(WigitId.PAPER_HINT,0))
         lastTime  = timeLength
         if (timesLimit.text.toString() != "")
         times     = timesLimit.text.toString().toInt()
@@ -201,7 +200,7 @@ object SettingFragment : Fragment() {
                     paper_id,
                     titleEt.text.toString(),
                     insEt.text.toString(),
-                    startDateTime,   //字符串和时间戳都有，字符串是startDateTime, 时间戳是startDateTimeStamp
+                    startDateTimeStamp,   //字符串和时间戳都有，字符串是startDateTime, 时间戳是startDateTimeStamp
                     endDateTime,
                     timeLength,
                     if (isHasPW.isChecked) passwordEt.text.toString() else "",

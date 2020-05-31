@@ -14,6 +14,7 @@ import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.twttheory.enums.PaperType
 import com.example.twttheory.enums.WigitId
 import com.example.twttheory.exam.createExam
 import com.example.twttheory.mainPage.TaskModel.paperType
@@ -91,7 +92,6 @@ class CreatTaskActivity : AppCompatActivity() {
                     paperType = 2
                 }
             }
-
         }
         //返回按钮的点击监听
         returnButton.setOnClickListener {
@@ -148,7 +148,7 @@ class CreatTaskActivity : AppCompatActivity() {
                                         i.isChecked = false
                                     }else{
                                         //记录该题的答案
-                                        recordInput[makeQuestionView.questionNumber-1].right_id = (makeQuestionView.optionNumber+65).toString()
+                                        recordInput[makeQuestionView.questionNumber-1].right_id = (makeQuestionView.optionNumber).toString()
                                     }
 
                                 }
@@ -187,10 +187,10 @@ class CreatTaskActivity : AppCompatActivity() {
                         optionView.optionMultiple.setOnCheckedChangeListener { buttonView, isChecked ->
                             if(recordInput[makeQuestionView.questionNumber-1].right_id == "-1"){
                                 //等于-1（尚未设置答案），直接赋值
-                                recordInput[makeQuestionView.questionNumber-1].right_id = (makeQuestionView.optionNumber+65).toString()
+                                recordInput[makeQuestionView.questionNumber-1].right_id = (makeQuestionView.optionNumber).toString()
                         }else{
                                 //不等于-1（前面选过其他答案），加上"#X"
-                                recordInput[makeQuestionView.questionNumber-1].right_id += '#'+(makeQuestionView.optionNumber+65).toString()
+                                recordInput[makeQuestionView.questionNumber-1].right_id += '#'+(makeQuestionView.optionNumber).toString()
                             }
 
                         }

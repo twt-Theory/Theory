@@ -16,6 +16,9 @@ import java.util.jar.Attributes
 
 //动态加入这个view， 可以直接产生选项
 class OptionView : LinearLayout {
+    lateinit var delete : ImageView
+    lateinit var deleteLP : LayoutParams
+
     lateinit var optionName : TextView
     lateinit var optionSingle : RadioButton
     lateinit var optionMultiple : CheckBox
@@ -43,6 +46,10 @@ class OptionView : LinearLayout {
         gravity = Gravity.LEFT
         orientation = LinearLayout.HORIZONTAL
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT,100)
+        if (! isExam){
+            addView(delete,deleteLP)
+        }
+
 
         when(type){
             0->{
@@ -79,19 +86,27 @@ class OptionView : LinearLayout {
         }
     }
 
+
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun initView(context: Context, alphabetNum: Int){
+        delete = ImageView(context)
         optionName = TextView(context)
         optionSingle = RadioButton(context)
         optionMultiple = CheckBox(context)
         optionContent = EditText(context)
         optionTV = TextView(context)
 
+        deleteLP = LayoutParams(60,60)
         optionNameLP = LinearLayout.LayoutParams(60,ViewGroup.LayoutParams.WRAP_CONTENT)
         optionSingleLP = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         optionMultipleLP = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         optionContentLP = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         optionTVLP = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+
+
+        //删除选项的图片设置资源文件
+        delete.background = getDrawable(context,R.drawable.delete)
+        deleteLP.gravity = Gravity.CENTER
 
 
         optionSingle.setOnClickListener {

@@ -212,7 +212,7 @@ data class PaperInfo(
 //每道题的信息
 data class QuestionInfo(
     val question: String,
-    val options: String,
+    val options: List<String>,        //这里改成了list
     val my_answer: String,
     val right_id: String,
     val type: Int,
